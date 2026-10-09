@@ -16,7 +16,7 @@ public class Main {
 		
 		ControllerUsuario usuario = new ControllerUsuario();
 		
-		LinkedList<Usuario> usuarios = usuario.mostrarUsuarios();
+		LinkedList<Usuario> usuarios = usuario.mostrarAlumnos();
 		
 		String texto = "";
 		
@@ -25,6 +25,7 @@ public class Main {
 		}
 		
 		System.out.println(texto);
+		
 		// TODO Auto-generated method stub
 
 /*		String[] menu = { "Login", "Salir" };

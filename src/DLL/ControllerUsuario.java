@@ -87,6 +87,31 @@ public class ControllerUsuario<T extends Usuario> {
 			statement.setBoolean(6, usuario.isActivo());
 			statement.setString(7, usuario.getEmail());
 
+			if (usuario instanceof Alumno) {
+				Alumno alumno = (Alumno) usuario;
+				PreparedStatement statementAlu = conexion
+						.prepareStatement("INSERT INTO alumnos (id, fecha_ingreso) VALUES (?,?)");
+				statementAlu.setInt(1, alumno.getId());
+				statementAlu.setDate(2, java.sql.Date.valueOf(alumno.getFechaIngreso()));
+			} else if (usuario instanceof Profesor) {
+				Profesor profesor = (Profesor) usuario;
+				PreparedStatement statementProf = conexion.prepareStatement(
+						"INSERT INTO profesores (id, legajo, profesion, categoria_fk) VALUES (?,?,?,?)");
+				statementProf.setInt(1, profesor.getId());
+				statementProf.setString(2, profesor.getLegajo());
+				statementProf.setString(3, profesor.getProfesion());
+				statementProf.setInt(4, profesor.getCategoriaId());
+			} else if (usuario instanceof Administrador) {
+				Administrador admin = (Administrador) usuario;
+				PreparedStatement statementAdmin = conexion
+						.prepareStatement("INSERT INTO administradores (id, categoria_fk) VALUES (?,?)");
+				statementAdmin.setInt(1, admin.getId());
+				statementAdmin.setInt(4, admin.getCategoriaId());
+			} else {
+				System.out.println("Tipo de usuario desconocido");
+			}
+			;
+
 			int filas = statement.executeUpdate();
 			if (filas > 0) {
 				System.out.println("Usuario agregado correctamente.");
@@ -101,26 +126,14 @@ public class ControllerUsuario<T extends Usuario> {
 	public LinkedList<Usuario> mostrarUsuarios() {
 		LinkedList<Usuario> usuarios = new LinkedList<>();
 		try {
-			PreparedStatement stmt = conexion.prepareStatement("SELECT \r\n"
-					+ "   u.id,\r\n"
-					+ "    u.userName,\r\n"
-					+ "    u.nombre,\r\n"
-					+ "    u.apellido,\r\n"
-					+ "    u.email,\r\n"
-					+ "    u.activo,\r\n"
-					+ "    p.legajo,\r\n"
-					+ "    p.profesion,\r\n"
-					+ "    a.fecha_ingreso,\r\n"
-					+ "   COALESCE(p.categoria_fk, adm.categoria_fk) AS categoria_fk,\r\n"
-					+ "    CASE \r\n"
+			PreparedStatement stmt = conexion.prepareStatement("SELECT \r\n" + "   u.id,\r\n" + "    u.userName,\r\n"
+					+ "    u.nombre,\r\n" + "    u.apellido,\r\n" + "    u.email,\r\n" + "    u.activo,\r\n"
+					+ "    p.legajo,\r\n" + "    p.profesion,\r\n" + "    a.fecha_ingreso,\r\n"
+					+ "   COALESCE(p.categoria_fk, adm.categoria_fk) AS categoria_fk,\r\n" + "    CASE \r\n"
 					+ "        WHEN p.id IS NOT NULL THEN 'PROFESOR'\r\n"
-					+ "        WHEN a.id IS NOT NULL THEN 'ALUMNO'\r\n"
-					+ "        ELSE 'ADMIN'\r\n"
-					+ "    END AS rol\r\n"
-					+ "FROM usuarios u\r\n"
-					+ "LEFT JOIN profesores p ON u.id = p.id\r\n"
-					+ "LEFT JOIN alumnos a ON u.id = a.id\r\n"
-					+ "LEFT JOIN administradores adm ON u.id = adm.id\r\n"
+					+ "        WHEN a.id IS NOT NULL THEN 'ALUMNO'\r\n" + "        ELSE 'ADMIN'\r\n"
+					+ "    END AS rol\r\n" + "FROM usuarios u\r\n" + "LEFT JOIN profesores p ON u.id = p.id\r\n"
+					+ "LEFT JOIN alumnos a ON u.id = a.id\r\n" + "LEFT JOIN administradores adm ON u.id = adm.id\r\n"
 					+ "WHERE u.activo = TRUE;");
 			ResultSet rs = stmt.executeQuery();
 
@@ -140,8 +153,8 @@ public class ControllerUsuario<T extends Usuario> {
 					legajo = rs.getString("legajo");
 					profecion = rs.getString("profesion");
 					categoriaId = rs.getInt("categoria_fk");
-					usuarios.add((T) new Profesor(id, userName, nombre, apellido,activo, email, legajo,
-							profecion, categoriaId));
+					usuarios.add((T) new Profesor(id, userName, nombre, apellido, activo, email, legajo, profecion,
+							categoriaId));
 					break;
 
 				case "ALUMNO":
@@ -151,8 +164,7 @@ public class ControllerUsuario<T extends Usuario> {
 
 				case "ADMIN":
 					categoriaId = rs.getInt("categoria_fk");
-					usuarios.add((T) new Administrador(id, userName, nombre, apellido, activo, email,
-							categoriaId));
+					usuarios.add((T) new Administrador(id, userName, nombre, apellido, activo, email, categoriaId));
 					break;
 
 				default:
@@ -170,7 +182,8 @@ public class ControllerUsuario<T extends Usuario> {
 	public LinkedList<Usuario> mostrarAlumnos() {
 		LinkedList<Usuario> usuarios = new LinkedList<>();
 		try {
-			PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM usuario WHERE tipo ='Alumno'");
+			PreparedStatement stmt = conexion.prepareStatement(
+					"SELECT u.id, u.userName, u.nombre, u.apellido, u.activo, u.email, a.fecha_ingreso FROM usuarios u INNER JOIN alumnos a ON a.id = u.id");
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
@@ -178,12 +191,11 @@ public class ControllerUsuario<T extends Usuario> {
 				String userName = rs.getString("userName");
 				String nombre = rs.getString("nombre");
 				String apellido = rs.getString("apellido");
-				String contrasena = rs.getString("contrasena");
 				boolean activo = rs.getBoolean("activo");
-				String rol = rs.getString("rol");
 				String email = rs.getString("email");
+				LocalDate fechaIngreso = rs.getDate("fecha_ingreso").toLocalDate();
 
-				usuarios.add((T) new Alumno(id, userName, nombre, apellido, contrasena, activo, email));
+				usuarios.add((T) new Alumno(id, userName, nombre, apellido, activo, email, fechaIngreso));
 
 			}
 		} catch (Exception e) {
