@@ -1,6 +1,6 @@
 package BLL;
 
-public class Usuario {
+public abstract class Usuario {
 
 	private int id;
 	private String userName;
@@ -8,15 +8,28 @@ public class Usuario {
 	private String apellido;
 	private String contrasena;
 	private boolean activo;
-	
-	public Usuario(int id, String userName, String nombre, String apellido, String contrasena, boolean activo) {
-		
+	private String email;
+
+	public Usuario(int id, String userName, String nombre, String apellido, String contrasena, boolean activo,
+			String email) {
+
 		this.id = id;
 		this.userName = userName;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.contrasena = contrasena;
 		this.activo = activo;
+		this.email = email;
+	}
+
+	public Usuario(int id, String userName, String nombre, String apellido, boolean activo, String email) {
+
+		this.id = id;
+		this.userName = userName;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.activo = activo;
+		this.email = email;
 	}
 
 	public int getId() {
@@ -43,6 +56,10 @@ public class Usuario {
 		return activo;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
 	private void setId(int id) {
 		this.id = id;
 	}
@@ -67,12 +84,16 @@ public class Usuario {
 		this.activo = activo;
 	}
 
+	private void setEmail(String email) {
+		this.email = email;
+	}
+
+	public abstract void Menu();
+
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", userName=" + userName + ", nombre=" + nombre + ", apellido=" + apellido
 				+ ", contrasena=" + contrasena + ", activo=" + activo + "]";
 	}
-	
-	
-	
+
 }

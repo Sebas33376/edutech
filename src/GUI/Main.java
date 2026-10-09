@@ -1,13 +1,33 @@
 package GUI;
 
+import java.util.LinkedList;
+
 import javax.swing.JOptionPane;
+
+import BLL.Usuario;
+import DLL.Conexion;
+import DLL.ControllerUsuario;
 
 public class Main {
 
 	public static void main(String[] args) {
+		
+		Conexion.getInstance();
+		
+		ControllerUsuario usuario = new ControllerUsuario();
+		
+		LinkedList<Usuario> usuarios = usuario.mostrarUsuarios();
+		
+		String texto = "";
+		
+		for (Usuario user : usuarios) {
+			texto += user + "\n"; 
+		}
+		
+		System.out.println(texto);
 		// TODO Auto-generated method stub
 
-		String[] menu = { "Login", "Salir" };
+/*		String[] menu = { "Login", "Salir" };
 
 		int opcion;
 		do {
@@ -111,6 +131,6 @@ public class Main {
 					JOptionPane.showMessageDialog(null, "Email o contraseña incorrectos");
 				}
 			}
-		} while (opcion != 1);
+		} while (opcion != 1);*/
 	}
 }
