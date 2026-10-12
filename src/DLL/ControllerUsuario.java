@@ -1,6 +1,7 @@
 package DLL;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
@@ -78,7 +79,7 @@ public class ControllerUsuario<T extends Usuario> {
 	public void agregarUsuario(Usuario usuario) {
 		try {
 			PreparedStatement statement = conexion.prepareStatement(
-					"INSERT INTO usuarios (id, userName, nombre, apellido, contrasena, activo, email) VALUES  VALUES (?,?,?,?,?,?,?)");
+					"INSERT INTO usuarios (id, userName, nombre, apellido, contrasena, activo, email) VALUES (?,?,?,?,?,?,?)");
 			statement.setString(1, usuario.getNombre());
 			statement.setString(2, usuario.getUserName());
 			statement.setString(3, usuario.getNombre());
@@ -87,35 +88,39 @@ public class ControllerUsuario<T extends Usuario> {
 			statement.setBoolean(6, usuario.isActivo());
 			statement.setString(7, usuario.getEmail());
 
-			if (usuario instanceof Alumno) {
-				Alumno alumno = (Alumno) usuario;
-				PreparedStatement statementAlu = conexion
-						.prepareStatement("INSERT INTO alumnos (id, fecha_ingreso) VALUES (?,?)");
-				statementAlu.setInt(1, alumno.getId());
-				statementAlu.setDate(2, java.sql.Date.valueOf(alumno.getFechaIngreso()));
-			} else if (usuario instanceof Profesor) {
-				Profesor profesor = (Profesor) usuario;
-				PreparedStatement statementProf = conexion.prepareStatement(
-						"INSERT INTO profesores (id, legajo, profesion, categoria_fk) VALUES (?,?,?,?)");
-				statementProf.setInt(1, profesor.getId());
-				statementProf.setString(2, profesor.getLegajo());
-				statementProf.setString(3, profesor.getProfesion());
-				statementProf.setInt(4, profesor.getCategoriaId());
-			} else if (usuario instanceof Administrador) {
-				Administrador admin = (Administrador) usuario;
-				PreparedStatement statementAdmin = conexion
-						.prepareStatement("INSERT INTO administradores (id, categoria_fk) VALUES (?,?)");
-				statementAdmin.setInt(1, admin.getId());
-				statementAdmin.setInt(4, admin.getCategoriaId());
-			} else {
-				System.out.println("Tipo de usuario desconocido");
-			}
-			;
-
 			int filas = statement.executeUpdate();
+			int idGenerado = 0;
 			if (filas > 0) {
-				System.out.println("Usuario agregado correctamente.");
+				ResultSet rs = statement.getGeneratedKeys();
+				if (rs.next()) {
+					idGenerado = rs.getInt(1);
+				}
+				
+				if (usuario instanceof Alumno) {
+					Alumno alumno = (Alumno) usuario;
+					PreparedStatement statementAlu = conexion
+							.prepareStatement("INSERT INTO alumnos (id, fecha_ingreso) VALUES (?,?)");
+					statementAlu.setInt(1, alumno.getId());
+					statementAlu.setDate(2, Date.valueOf(alumno.getFechaIngreso()));
+				} else if (usuario instanceof Profesor) {
+					Profesor profesor = (Profesor) usuario;
+					PreparedStatement statementProf = conexion.prepareStatement(
+							"INSERT INTO profesores (id, legajo, profesion, categoria_fk) VALUES (?,?,?,?)");
+					statementProf.setInt(1, profesor.getId());
+					statementProf.setString(2, profesor.getLegajo());
+					statementProf.setString(3, profesor.getProfesion());
+					statementProf.setInt(4, profesor.getCategoriaId());
+				} else if (usuario instanceof Administrador) {
+					Administrador admin = (Administrador) usuario;
+					PreparedStatement statementAdmin = conexion
+							.prepareStatement("INSERT INTO administradores (id, categoria_fk) VALUES (?,?)");
+					statementAdmin.setInt(1, admin.getId());
+					statementAdmin.setInt(4, admin.getCategoriaId());
+				} else {
+					System.out.println("Tipo de usuario desconocido");
+				}
 			}
+
 		} catch (MySQLIntegrityConstraintViolationException e) {
 			JOptionPane.showMessageDialog(null, "No se puede crear usuario con mail existente");
 		} catch (Exception e) {
