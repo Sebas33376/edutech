@@ -8,11 +8,12 @@ public class Entrega {
 	private Estado estado;
 	
 	public Entrega(int id, int alumnoId, int tareaId, Estado estado) {
-		super();
-		this.id = id;
-		this.alumnoId = alumnoId;
-		this.tareaId = tareaId;
-		this.estado = estado;
+		
+		setId(id);
+		setAlumnoId(alumnoId);
+		setTareaId(tareaId);
+		setEstado(estado);
+		
 	}
 
 	public int getId() {

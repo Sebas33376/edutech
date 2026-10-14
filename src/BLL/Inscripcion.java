@@ -9,10 +9,9 @@ public class Inscripcion {
 	private LocalDate fechaInscripicion;
 	
 	public Inscripcion(int usuarioId, int cursoId, LocalDate fechaInscripicion) {
-		super();
-		this.usuarioId = usuarioId;
-		this.cursoId = cursoId;
-		this.fechaInscripicion = LocalDate.now();
+		setUsuario(usuarioId);
+		setCurso(cursoId);
+		setFechaInscripicion(LocalDate.now());
 	}
 
 	public int getUsuarioId() {

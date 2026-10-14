@@ -6,8 +6,8 @@ public class Categoria {
 	private String nombre;
 	
 	public Categoria(int id, String nombre) {
-		this.id = id;
-		this.nombre = nombre;
+		setId(id);
+		setNombre(nombre);
 	}
 
 	public int getId() {

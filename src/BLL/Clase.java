@@ -9,12 +9,11 @@ public class Clase {
 	private int cursoId;
 	
 	public Clase(int id, String titulo, String url, String descripcion, int cursoId) {
-		super();
-		this.id = id;
-		this.titulo = titulo;
-		this.url = url;
-		this.descripcion = descripcion;
-		this.cursoId = cursoId;
+		setId(id);
+		setTitulo(titulo);
+		setUrl(url);
+		setDescripcion(descripcion);
+		setCursoId(cursoId);
 	}
 
 	public int getId() {

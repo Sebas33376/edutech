@@ -38,7 +38,8 @@ public class Alumno extends Usuario {
 
 	@Override
 	public void Menu() {
-		// TODO Auto-generated method stub
+		
+		
 		
 	}
 	

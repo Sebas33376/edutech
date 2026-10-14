@@ -10,11 +10,11 @@ public class Curso {
 	
 	public Curso(int id, String titulo, String descripcion, int categoriaId, int profesorId) {
 	
-		this.id = id;
-		this.titulo = titulo;
-		this.descripcion = descripcion;
-		this.categoriaId = categoriaId;
-		this.profesorId = profesorId;
+		setId(id);
+		setTitulo(titulo);
+		setDescripcion(descripcion);
+		setCategoriaId(categoriaId);
+		setProfesorId(profesorId);
 	}
 
 	public int getId() {
