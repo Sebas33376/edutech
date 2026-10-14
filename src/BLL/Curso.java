@@ -5,16 +5,19 @@ public class Curso {
 	private int id;
 	private String titulo;
 	private String descripcion;
+	private Double precio;
 	private int categoriaId;
 	private int profesorId;
 	
-	public Curso(int id, String titulo, String descripcion, int categoriaId, int profesorId) {
+	public Curso(int id, String titulo, String descripcion, Double precio ,int categoriaId, int profesorId) {
 	
 		setId(id);
 		setTitulo(titulo);
 		setDescripcion(descripcion);
+		setPrecio(precio);
 		setCategoriaId(categoriaId);
 		setProfesorId(profesorId);
+		
 	}
 
 	public int getId() {
@@ -28,6 +31,10 @@ public class Curso {
 	public String getDescripcion() {
 		return descripcion;
 	}
+	
+	public Double getPrecio() {
+		return precio;
+	}
 
 	public int getCategoriaId() {
 		return categoriaId;
@@ -36,7 +43,7 @@ public class Curso {
 	public int getProfesorId() {
 		return profesorId;
 	}
-
+	
 	private void setId(int id) {
 		this.id = id;
 	}
@@ -47,6 +54,10 @@ public class Curso {
 
 	private void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+	
+	private void setPrecio(Double precio) {
+		this.precio = precio;
 	}
 
 	private void setCategoriaId(int categoriaId) {
