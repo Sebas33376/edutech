@@ -1,5 +1,9 @@
 package BLL;
 
+import javax.swing.JOptionPane;
+
+import DLL.ControllerUsuario;
+
 public abstract class Usuario {
 
 	private int id;
@@ -9,6 +13,7 @@ public abstract class Usuario {
 	private String contrasena;
 	private boolean activo;
 	private String email;
+	private static ControllerUsuario controller = new ControllerUsuario();
 
 	public Usuario(int id, String userName, String nombre, String apellido, String contrasena, boolean activo,
 			String email) {
@@ -59,7 +64,11 @@ public abstract class Usuario {
 	public String getEmail() {
 		return email;
 	}
-
+	
+	public static ControllerUsuario getController() {
+		return controller;
+	}
+	
 	private void setId(int id) {
 		this.id = id;
 	}
@@ -87,8 +96,23 @@ public abstract class Usuario {
 	private void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public static void setController(ControllerUsuario controller) {
+		Usuario.controller = controller;
+	}
 
 	public abstract void Menu();
+
+	public static Usuario Login(String nombre, String contrasenia) {
+		if (nombre.isEmpty() || contrasenia.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Datos incorrectos");
+			return null;
+		} else {
+
+			return controller.login(nombre, contrasenia);
+		}
+
+	}
 
 	@Override
 	public String toString() {

@@ -6,6 +6,7 @@ public class Curso {
 	private String titulo;
 	private String descripcion;
 	private Double precio;
+	private boolean activo;
 	private int categoriaId;
 	private int profesorId;
 	
@@ -36,6 +37,10 @@ public class Curso {
 		return precio;
 	}
 
+	public boolean isActivo() {
+		return activo;
+	}
+
 	public int getCategoriaId() {
 		return categoriaId;
 	}
@@ -58,6 +63,10 @@ public class Curso {
 	
 	private void setPrecio(Double precio) {
 		this.precio = precio;
+	}
+	
+	private void setActivo(boolean activo) {
+		this.activo = activo;
 	}
 
 	private void setCategoriaId(int categoriaId) {
