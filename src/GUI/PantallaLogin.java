@@ -64,15 +64,15 @@ public class PantallaLogin extends JFrame {
 					PantallaError error = new PantallaError("Usuario o contraseña icorrectos");
 				} else {
 					if (logueado instanceof Profesor) {
-						MenuProfesor menu = new MenuProfesor();
+						MenuProfesor menu = new MenuProfesor(logueado);
 						menu.setVisible(true);
 						dispose();
 					} else if (logueado instanceof Alumno) {
-						MenuAlumno menu = new MenuAlumno();
+						MenuAlumno menu = new MenuAlumno(logueado);
 						menu.setVisible(true);
 						dispose();
 					} else if (logueado instanceof Administrador) {
-						MenuAdministrador menu = new MenuAdministrador();
+						MenuAdministrador menu = new MenuAdministrador(logueado);
 						menu.setVisible(true);
 						dispose();
 
