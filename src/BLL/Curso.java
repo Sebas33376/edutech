@@ -8,7 +8,9 @@ public class Curso {
 	private Double precio;
 	private boolean activo;
 	private int categoriaId;
+	private String categoria;
 	private int profesorId;
+	private String profesor;
 	
 	public Curso(int id, String titulo, String descripcion, Double precio ,int categoriaId, int profesorId) {
 	
@@ -19,6 +21,15 @@ public class Curso {
 		setCategoriaId(categoriaId);
 		setProfesorId(profesorId);
 		
+	}
+
+	public Curso(String titulo, String descripcion, double precio, String categoria, String profesor) {
+		
+		setTitulo(titulo);
+		setDescripcion(descripcion);
+		setPrecio(precio);
+		setCategoria(categoria);
+		setProfesor(profesor);
 	}
 
 	public int getId() {
@@ -44,9 +55,17 @@ public class Curso {
 	public int getCategoriaId() {
 		return categoriaId;
 	}
+	
+	public String getCategoria() {
+		return categoria;
+	}
 
 	public int getProfesorId() {
 		return profesorId;
+	}
+	
+	public String getProfesor() {
+		return profesor;
 	}
 	
 	private void setId(int id) {
@@ -72,9 +91,17 @@ public class Curso {
 	private void setCategoriaId(int categoriaId) {
 		this.categoriaId = categoriaId;
 	}
+	
+	private void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
 
 	private void setProfesorId(int profesorId) {
 		this.profesorId = profesorId;
+	}
+	
+	private void setProfesor(String profesor) {
+		this.profesor = profesor;
 	}
 
 	@Override
