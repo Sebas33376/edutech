@@ -44,13 +44,14 @@ public class MenuAlumno extends JFrame {
 		contentPane.add(scrollPane);
 		
 		cargarTabla();
+		
+		
 
 	}
 	
 	
 
 	private void cargarTabla() {
-		model.setRowCount(0);
 		LinkedList<Curso> cursos = ControllerCursos.mostrarCursos();
 		for (Curso i : cursos) {
 
