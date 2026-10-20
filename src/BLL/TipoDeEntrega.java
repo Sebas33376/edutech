@@ -1,5 +1,5 @@
 package BLL;
 
-public enum Tipo {
+public enum TipoDeEntrega {
 	CHOICE, ENTREGABLE
 }

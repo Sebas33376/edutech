@@ -3,11 +3,11 @@ package BLL;
 public class Tarea {
 	
 	private int id;
-	private Tipo tipo;
+	private TipoDeEntrega tipo;
 	private String url;
 	private int claseId;
 	
-	public Tarea(int id, Tipo tipo, String url, int claseId) {
+	public Tarea(int id, TipoDeEntrega tipo, String url, int claseId) {
 		super();
 		this.id = id;
 		this.tipo = tipo;
@@ -19,7 +19,7 @@ public class Tarea {
 		return id;
 	}
 
-	public Tipo getTipo() {
+	public TipoDeEntrega getTipo() {
 		return tipo;
 	}
 
@@ -35,7 +35,7 @@ public class Tarea {
 		this.id = id;
 	}
 
-	private void setTipo(Tipo tipo) {
+	private void setTipo(TipoDeEntrega tipo) {
 		this.tipo = tipo;
 	}
 
