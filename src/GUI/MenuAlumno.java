@@ -17,11 +17,20 @@ import BLL.Alumno;
 import BLL.Curso;
 import BLL.Inscripcion;
 import BLL.Usuario;
-import DLL.ControllerCursos;
+import DLL.ControllerCurso;
+import DLL.ControllerInscripcion;
 
 import javax.swing.JTable;
 import java.awt.Font;
 import javax.swing.JSeparator;
+import javax.swing.JToolBar;
+import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Component;
 
 public class MenuAlumno extends JFrame {
 
@@ -84,20 +93,27 @@ public class MenuAlumno extends JFrame {
 		setTitle("Alumno - Cursos");
 		setSize(980, 400);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setLayout(new BorderLayout());
 
-		cursos = ControllerCursos.mostrarCursos();
+		cursos = ControllerCurso.mostrarCursos();
+		inscripciones = ControllerInscripcion.getInscripcionesByAlumnoId(usuario.getId());
 
-		DefaultListModel<String> model = new DefaultListModel<>();
+		DefaultListModel<String> modelCursos = new DefaultListModel<>();
 
 		for (Curso curso : cursos) {
 
 			String precio = String.format("$%,.2f", curso.getPrecio());
-			model.addElement(curso.getTitulo() + " - " + curso.getDescripcion() + " - " + curso.getProfesor() + " - "
+			modelCursos.addElement(curso.getTitulo() + " - " + curso.getDescripcion() + " - " + curso.getProfesor() + " - "
 					+ precio + " - " + curso.getCategoria());
 		}
+		
+		DefaultListModel<String> modelInscripciones = new DefaultListModel<>();
+		
+		for (Inscripcion inscripcion : inscripciones) {
+			
+		}
 
-		listaCursos = new JList<>(model);
+		listaCursos = new JList<>(modelCursos);
+		listaCursos.setBounds(57, 0, 800, 363);
 
 		listaCursos.addListSelectionListener(e -> {
 			int index = listaCursos.getSelectedIndex();
@@ -108,8 +124,23 @@ public class MenuAlumno extends JFrame {
 				dispose();
 			}
 		});
+		getContentPane().setLayout(null);
 
-		add(listaCursos, BorderLayout.CENTER);
+		getContentPane().add(listaCursos);
+		
+		JToolBar toolBar = new JToolBar();
+		toolBar.setFloatable(false);
+		toolBar.setBounds(0, 0, 100, 363);
+		toolBar.setOrientation(SwingConstants.VERTICAL);
+		getContentPane().add(toolBar);
+		
+		JButton btnPerfil = new JButton("Mi perfil");
+		btnPerfil.setHorizontalAlignment(SwingConstants.LEADING);
+		toolBar.add(btnPerfil);
+		
+		JButton btnMisCursos = new JButton("Mis cursos");
+		btnMisCursos.setHorizontalAlignment(SwingConstants.LEADING);
+		toolBar.add(btnMisCursos);
 
 		setVisible(true);
 	}

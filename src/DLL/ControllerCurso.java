@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 
 import BLL.Curso;
 
-public class ControllerCursos {
+public class ControllerCurso {
 	private static Connection conexion = Conexion.getInstance().getConnection();
 
 	public static Curso getCursoById(int id) {

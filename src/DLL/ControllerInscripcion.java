@@ -7,7 +7,10 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
+import BLL.Curso;
 import BLL.Inscripcion;
+import BLL.MedioDePago;
+import BLL.Usuario;
 
 public class ControllerInscripcion {
 	private static Connection conexion = Conexion.getInstance().getConnection();
@@ -36,11 +39,13 @@ public class ControllerInscripcion {
 			stmt.setInt(1, alumnoId);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				int userid = rs.getInt("user_id");
 				int cursoId = rs.getInt("curso_id");
 				LocalDate fechaInscripcion = rs.getDate("fecha_inscripcion").toLocalDate();
 				int medioDePagoId = rs.getInt("medio_de_pago_fk");
-				inscripciones.add(new Inscripcion(alumnoId, cursoId, fechaInscripcion, medioDePagoId));
+				Usuario usuario = ControllerUsuario.getUsuarioById(alumnoId);
+				Curso curso = ControllerCurso.getCursoById(cursoId);
+				MedioDePago medioDePago = ControllerMedioDePago.getMedioDePagoById(medioDePagoId);
+				inscripciones.add(new Inscripcion(alumnoId, cursoId, curso, usuario, fechaInscripcion, medioDePagoId, medioDePago));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -6,6 +6,8 @@ public class Inscripcion {
 
 	private int usuarioId;
 	private int cursoId;
+	private Curso curso;
+	private Usuario usuario;
 	private LocalDate fechaInscripicion;
 	private int medioDePagoId;
 	private MedioDePago medioDePago;
@@ -16,6 +18,16 @@ public class Inscripcion {
 		setFechaInscripicion(LocalDate.now());
 		setMedioDePagoId(medioDePagoId);
 	}
+	
+	public Inscripcion(int usuarioId, int cursoId, Curso curso, Usuario usuario, LocalDate fechaInscripicion, int medioDePagoId, MedioDePago medioDePago) {
+		setUsuario(usuarioId);
+		setCurso(cursoId);
+		setCurso(curso);
+		setUsuario(usuario);
+		setFechaInscripicion(fechaInscripicion);
+		setMedioDePagoId(medioDePagoId);
+		setMedioDePago(medioDePago);
+	}
 
 	public int getUsuarioId() {
 		return usuarioId;
@@ -23,6 +35,15 @@ public class Inscripcion {
 	public int getCursoId() {
 		return cursoId;
 	}
+	
+	public Curso getCurso() {
+		return curso;
+	}
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	
 	public LocalDate getFechaInscripicion() {
 		return fechaInscripicion;
 	}
@@ -41,6 +62,15 @@ public class Inscripcion {
 	private void setCurso(int cursoId) {
 		this.cursoId = cursoId;
 	}
+	
+	private void setCurso(Curso curso) {
+		this.curso = curso;
+	}
+	
+	private void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
 	private void setFechaInscripicion(LocalDate fechaInscripicion) {
 		this.fechaInscripicion = fechaInscripicion;
 	}
