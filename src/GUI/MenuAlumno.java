@@ -18,6 +18,7 @@ import BLL.Usuario;
 import DLL.ControllerCurso;
 import DLL.ControllerInscripcion;
 import javax.swing.SwingConstants;
+import java.awt.Component;
 
 public class MenuAlumno extends JFrame {
 
