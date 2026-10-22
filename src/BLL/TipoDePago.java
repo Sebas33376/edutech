@@ -1,5 +1,5 @@
 package BLL;
 
 public enum TipoDePago {
-CREDITO, DEBITO
+CRÉDITO, DÉBITO
 }

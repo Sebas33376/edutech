@@ -35,7 +35,7 @@ public class ControllerInscripcion {
 		LinkedList<Inscripcion> inscripciones = new LinkedList<>();
 		try {
 			PreparedStatement stmt = conexion.prepareStatement(
-					"SELECT * FROM inscripciones WHERE user_id = ? inner join cursos c on c.id = inscripciones.curso_id inner join medios_de_pago m on m.id = inscripciones.medio_de_pago_fk");
+					"SELECT curso_id, fecha_inscripcion, medio_de_pago_fk FROM inscripciones WHERE user_id = ?");
 			stmt.setInt(1, alumnoId);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
