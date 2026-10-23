@@ -68,7 +68,7 @@ public class PantallaLogin extends JFrame {
 						menu.setVisible(true);
 						dispose();
 					} else if (logueado instanceof Alumno) {
-						MenuAlumno menu = new MenuAlumno(logueado);
+						MenuCursos menu = new MenuCursos(logueado);
 						menu.setVisible(true);
 						dispose();
 					} else if (logueado instanceof Administrador) {
