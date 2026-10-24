@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 import java.util.LinkedList;
 
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -18,15 +18,20 @@ import BLL.Usuario;
 import DLL.ControllerCurso;
 import DLL.ControllerInscripcion;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JComboBox;
 
 public class MenuCursos extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JList<String> listaCursos;
+	private JTable table;
+	private DefaultTableModel model;
 	private LinkedList<Inscripcion> inscripciones;
 	private LinkedList<Curso> cursos;
 
@@ -50,39 +55,31 @@ public class MenuCursos extends JFrame {
 	}
 
 	public MenuCursos(Usuario usuario) {
-		setTitle("Alumno - Cursos");
-		setSize(980, 400);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		getContentPane().setLayout(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 897, 500);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+		setContentPane(contentPane);
+		setTitle("Cursos");
+		contentPane.setLayout(null);
 
 		JToolBar toolBar = new JToolBar();
+		toolBar.setBounds(0, 0, 0, 0);
 		toolBar.setOrientation(SwingConstants.VERTICAL);
-		toolBar.setBounds(0, 0, 92, 363);
+		toolBar.setLayout(new BoxLayout(toolBar, BoxLayout.Y_AXIS));
 		toolBar.setFloatable(false);
 		getContentPane().add(toolBar);
 
 		cursos = ControllerCurso.mostrarCursos();
 		inscripciones = ControllerInscripcion.getInscripcionesByAlumnoId(usuario.getId());
 
-		DefaultListModel<String> model = getCursos();
+		DefaultTableModel model = new DefaultTableModel(
+				new Object[] { "Título", "Descripción", "Categoría", "Profesor", "Precio" }, cursos.size());
+		table = new JTable(model);
 
-		listaCursos = new JList<>(model);
-		listaCursos.setBounds(102, 0, 864, 363);
-		listaCursos.addListSelectionListener(e -> {
-			int index = listaCursos.getSelectedIndex();
-			if (index >= 0) {
-				Curso cursoSeleccionado;
-				if (listaCursos.getModel() == getMisCursos()) {
-					cursoSeleccionado = inscripciones.get(index).getCurso();
-				} else {
-					cursoSeleccionado = cursos.get(index);
-				}
-				DetalleCurso detalleCurso = new DetalleCurso(cursoSeleccionado, usuario);
-				detalleCurso.setVisible(true);
-				dispose();
-			}
-		});
-		getContentPane().add(listaCursos);
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(198, 10, 675, 443);
+		getContentPane().add(scrollPane);
 
 		JButton btnMiPerfil = new JButton("Mi perfil");
 		btnMiPerfil.addActionListener(e -> {
@@ -96,38 +93,14 @@ public class MenuCursos extends JFrame {
 		btnCursos.addActionListener(e -> {
 			if (btnCursos.getText().equals("Mis cursos")) {
 				btnCursos.setText("Cursos");
-				listaCursos.setModel(getMisCursos());
-				
-			} else if(btnCursos.getText().equals("Cursos")) {
+
+			} else if (btnCursos.getText().equals("Cursos")) {
 				btnCursos.setText("Mis cursos");
-				listaCursos.setModel(getCursos());
 
 			}
 		});
 		toolBar.add(btnCursos);
 
 		setVisible(true);
-	}
-
-	private DefaultListModel<String> getCursos() {
-		DefaultListModel<String> modelCursos = new DefaultListModel<>();
-		for (Curso curso : cursos) {
-			String precio = String.format("%.2f", curso.getPrecio());
-			modelCursos.addElement(curso.getTitulo() + " - " + curso.getDescripcion() + " - " + precio + " - "
-					+ curso.getCategoria() + " - " + curso.getProfesor());
-		}
-
-		return modelCursos;
-	}
-	
-	private DefaultListModel<String> getMisCursos() {
-		DefaultListModel<String> modelInscripciones = new DefaultListModel<>();
-		for (Inscripcion inscripcion : inscripciones) {
-			Curso curso = inscripcion.getCurso();
-			String precio = String.format("%.2f", curso.getPrecio());
-			modelInscripciones.addElement(curso.getTitulo() + " - " + curso.getDescripcion() + " - " + precio
-					+ " - " + curso.getCategoria() + " - " + curso.getProfesor());
-		}
-		return modelInscripciones;
 	}
 }
