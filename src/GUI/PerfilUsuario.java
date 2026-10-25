@@ -1,7 +1,10 @@
 package GUI;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -26,9 +29,20 @@ public class PerfilUsuario extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel(html(usuario));
-		lblNewLabel.setBounds(10, 10, 604, 305);
-		contentPane.add(lblNewLabel);
+		JLabel lblHtml = new JLabel(html(usuario));
+		lblHtml.setBounds(10, 10, 604, 305);
+		contentPane.add(lblHtml);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MenuCursos menu = new MenuCursos(usuario);
+				menu.setVisible(true);
+				dispose();
+			}
+		});
+		btnVolver.setBounds(10, 10, 84, 20);
+		contentPane.add(btnVolver);
 		
 		
 

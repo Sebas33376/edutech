@@ -23,13 +23,15 @@ public class Curso {
 		
 	}
 
-	public Curso(String titulo, String descripcion, double precio, String categoria, String profesor) {
+	public Curso( int id, String titulo, String descripcion, double precio, boolean activo ,String categoria, String profesor) {
 		
+		setId(id);
 		setTitulo(titulo);
 		setDescripcion(descripcion);
 		setPrecio(precio);
 		setCategoria(categoria);
 		setProfesor(profesor);
+		setActivo(activo);
 	}
 
 	public int getId() {
@@ -106,9 +108,12 @@ public class Curso {
 
 	@Override
 	public String toString() {
-		return "Curso [id=" + id + ", titulo=" + titulo + ", descripcion=" + descripcion + ", categoria=" + categoriaId	+ ", profesor=" + profesorId + "]";
+		return "Curso [id=" + id + ", titulo=" + titulo + ", descripcion=" + descripcion + ", precio=" + precio
+				+ ", activo=" + activo + ", categoriaId=" + categoriaId + ", categoria=" + categoria + ", profesorId="
+				+ profesorId + ", profesor=" + profesor + "]";
 	}
-	
+
+
 	
 	
 }

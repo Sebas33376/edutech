@@ -12,6 +12,7 @@ import BLL.Profesor;
 import BLL.Usuario;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
@@ -61,7 +62,7 @@ public class PantallaLogin extends JFrame {
 				Usuario logueado = Usuario.Login(inputUsaurio.getText(), inputContrasena.getText());
 
 				if (logueado == null) {
-					PantallaError error = new PantallaError("Usuario o contraseña icorrectos");
+					JOptionPane.showConfirmDialog(null, "El usuario o contraseña son incorrectos");
 				} else {
 					if (logueado instanceof Profesor) {
 						MenuProfesor menu = new MenuProfesor(logueado);

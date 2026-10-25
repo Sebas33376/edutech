@@ -2,6 +2,10 @@ package BLL;
 
 import java.time.LocalDate;
 
+import javax.swing.JOptionPane;
+
+import DLL.ControllerInscripcion;
+
 public class Inscripcion {
 
 	private int usuarioId;
@@ -82,6 +86,14 @@ public class Inscripcion {
 	private void setMedioDePago(MedioDePago medioDePago) {
 		this.medioDePago = medioDePago;
 	}
+	
+	public static boolean Inscribirce(int alumnoId, int cursoId, int medioDePagoId) {
+		if (alumnoId == 0 && cursoId == 0 && medioDePagoId == 0) {
+			return false;
+		}
+			return ControllerInscripcion.inscribirAlumno(alumnoId, cursoId, medioDePagoId);
+		}
+
 	
 	@Override
 	public String toString() {

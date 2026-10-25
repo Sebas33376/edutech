@@ -17,14 +17,15 @@ public class ControllerInscripcion {
 	
 	public static boolean inscribirAlumno(int alumnoId, int cursoId, int medioDePagoId) {
 		try {
+			System.out.println("Alumno: " + alumnoId + "Curso: " + cursoId + "Medio de pago: " + medioDePagoId);
 			PreparedStatement stmt = conexion.prepareStatement(
-					"INSERT INTO inscripciones (user_id, curso_id, fecha_inscripcion, medio_de_pago_fk) VALUES ('?,?,?, ?)");
+					"INSERT INTO inscripciones (user_id, curso_id, fecha_inscripcion, medio_de_pago_fk) VALUES (?,?,?,?)");
 			stmt.setInt(1, alumnoId);
 			stmt.setInt(2, cursoId);
 			stmt.setDate(3, Date.valueOf(LocalDate.now()));
 			stmt.setInt(4, medioDePagoId);
-			int rowsAffected = stmt.executeUpdate();
-			return rowsAffected > 0;
+			int filas = stmt.executeUpdate();
+			return filas > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
