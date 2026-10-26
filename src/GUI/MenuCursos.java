@@ -148,6 +148,8 @@ public class MenuCursos extends JFrame {
 		toolBar.add(btnCerrarSesion);
 		setVisible(true);
 	}
+	
+	private void getTareas(Usuario usuario) {};
 
 	private void getCursos(LinkedList<Curso> cursos, DefaultTableModel model) {
 		model.setRowCount(0);
