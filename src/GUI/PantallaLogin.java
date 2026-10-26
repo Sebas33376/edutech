@@ -64,20 +64,11 @@ public class PantallaLogin extends JFrame {
 				if (logueado == null) {
 					JOptionPane.showConfirmDialog(null, "El usuario o contraseña son incorrectos");
 				} else {
-					if (logueado instanceof Profesor) {
-						MenuProfesor menu = new MenuProfesor(logueado);
-						menu.setVisible(true);
-						dispose();
-					} else if (logueado instanceof Alumno) {
-						MenuCursos menu = new MenuCursos(logueado);
-						menu.setVisible(true);
-						dispose();
-					} else if (logueado instanceof Administrador) {
-						MenuAdministrador menu = new MenuAdministrador(logueado);
-						menu.setVisible(true);
-						dispose();
 
-					}
+					MenuCursos menu = new MenuCursos(logueado);
+					menu.setVisible(true);
+					dispose();
+
 				}
 			}
 		});

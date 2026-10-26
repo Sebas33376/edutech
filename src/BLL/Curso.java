@@ -23,7 +23,7 @@ public class Curso {
 		
 	}
 
-	public Curso( int id, String titulo, String descripcion, double precio, boolean activo ,String categoria, String profesor) {
+	public Curso( int id, String titulo, String descripcion, double precio, boolean activo ,int categoriaId, int profesorId,String categoria, String profesor) {
 		
 		setId(id);
 		setTitulo(titulo);
@@ -32,6 +32,8 @@ public class Curso {
 		setCategoria(categoria);
 		setProfesor(profesor);
 		setActivo(activo);
+		setCategoriaId(categoriaId);
+		setProfesorId(profesorId);
 	}
 
 	public int getId() {
