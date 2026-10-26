@@ -46,7 +46,7 @@ public class MenuCursos extends JFrame {
 			public void run() {
 				try {
 					Usuario usuario = new Profesor(3, "prof_juan", "Juan", "Pérez",
-							"$2a$12$T86dOi0GsX5GONhfSDnHUe79ki4wVMFk9yYdHw7yGPCEpcb5gCgqy", true,
+							"$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
 							"juan.perez@davinci.edu.ar", "LEG-101", "Ingeniero en Sistemas", 1);
 					MenuCursos frame = new MenuCursos(usuario);
 					frame.setVisible(true);
@@ -92,8 +92,22 @@ public class MenuCursos extends JFrame {
 				}
 			}
 		});
+
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(198, 10, 675, 443);
+		getContentPane().add(scrollPane);
+
+		JButton btnMiPerfil = new JButton("Mi perfil");
+		btnMiPerfil.setMargin(new Insets(10, 14, 10, 14));
+		btnMiPerfil.setBorder(new EmptyBorder(0, 0, 0, 0));
+		btnMiPerfil.addActionListener(e -> {
+			PerfilUsuario perfilAlumno = new PerfilUsuario(usuario);
+			perfilAlumno.setVisible(true);
+			dispose();
+		});
+		toolBar.add(btnMiPerfil);
 		if (usuario instanceof Alumno) {
-		
+
 			getCursos(cursos, model);
 			JButton btnCursos = new JButton("Mis cursos");
 			btnCursos.setMargin(new Insets(10, 14, 10, 14));
@@ -112,23 +126,13 @@ public class MenuCursos extends JFrame {
 		} else if (usuario instanceof Profesor) {
 
 			getCursosImpartidos(cursos, model, usuario);
+			JButton btnTareas = new JButton("Tareas");
+			btnTareas.setMargin(new Insets(10, 14, 10, 14));
+			btnTareas.setBorder(new EmptyBorder(0, 0, 0, 0));
+			toolBar.add(btnTareas);
 
 		} else if (usuario instanceof Administrador) {
 		}
-
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(198, 10, 675, 443);
-		getContentPane().add(scrollPane);
-
-		JButton btnMiPerfil = new JButton("Mi perfil");
-		btnMiPerfil.setMargin(new Insets(10, 14, 10, 14));
-		btnMiPerfil.setBorder(new EmptyBorder(0, 0, 0, 0));
-		btnMiPerfil.addActionListener(e -> {
-			PerfilUsuario perfilAlumno = new PerfilUsuario(usuario);
-			perfilAlumno.setVisible(true);
-			dispose();
-		});
-		toolBar.add(btnMiPerfil);
 
 		JButton btnCerrarSesion = new JButton("Cerrar Sesión");
 		btnCerrarSesion.addActionListener(new ActionListener() {
@@ -140,8 +144,8 @@ public class MenuCursos extends JFrame {
 		});
 		btnCerrarSesion.setMargin(new Insets(10, 14, 10, 14));
 		btnCerrarSesion.setBorder(new EmptyBorder(0, 0, 0, 0));
-		toolBar.add(btnCerrarSesion);
 
+		toolBar.add(btnCerrarSesion);
 		setVisible(true);
 	}
 
@@ -162,7 +166,6 @@ public class MenuCursos extends JFrame {
 		model.setRowCount(0);
 		List<Curso> cursosByProfesor = cursos.stream().filter(curso -> curso.getProfesorId() == usuario.getId())
 				.collect(Collectors.toList());
-		System.out.println(cursosByProfesor);
 		for (Curso curso : cursosByProfesor) {
 			if (curso.isActivo()) {
 				String precio = String.format("$%.2f", curso.getPrecio());
