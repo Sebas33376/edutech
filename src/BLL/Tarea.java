@@ -3,23 +3,35 @@ package BLL;
 public class Tarea {
 	
 	private int id;
-	private TipoDeEntrega tipo;
+	private String titulo;
+	private String descripcion;	
+	//private TipoDeEntrega tipo;
+	private String tipo;
 	private String url;
 	private int claseId;
 	
-	public Tarea(int id, TipoDeEntrega tipo, String url, int claseId) {
-		super();
-		this.id = id;
-		this.tipo = tipo;
-		this.url = url;
-		this.claseId = claseId;
+	public Tarea(int id, String titulo, String descripcion, String tipo, String url, int claseId) {
+		setId(id);
+		setTitulo(titulo);
+		setDescripcion(descripcion);
+		setTipo(tipo);
+		setUrl(url);
+		setClaseId(claseId);
 	}
 
 	public int getId() {
 		return id;
 	}
+	
+	public String getTitulo() {
+		return titulo;
+	}
+	
+	public String getDescripcion() {
+		return descripcion;
+	}
 
-	public TipoDeEntrega getTipo() {
+	public String getTipo() {
 		return tipo;
 	}
 
@@ -34,8 +46,16 @@ public class Tarea {
 	private void setId(int id) {
 		this.id = id;
 	}
+	
+	private void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+	
+	private void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
 
-	private void setTipo(TipoDeEntrega tipo) {
+	private void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
 

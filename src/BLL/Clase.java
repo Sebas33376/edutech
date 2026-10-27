@@ -12,6 +12,7 @@ public class Clase {
 	private String descripcion;
 	private int cursoId;
 	private String curso;
+	private int cantEntregas;
 	
 	public Clase(int id, String titulo, String url, String descripcion, int cursoId) {
 		setId(id);
@@ -21,13 +22,14 @@ public class Clase {
 		setCursoId(cursoId);
 	}
 	
-	public Clase(int id, String titulo, String url, String descripcion, int cursoId, String curso) {
+	public Clase(int id, String titulo, String url, String descripcion, int cursoId, String curso, int cantEntregas) {
 		setId(id);
 		setTitulo(titulo);
 		setUrl(url);
 		setDescripcion(descripcion);
 		setCursoId(cursoId);
 		setCurso(curso);
+		setCantEntregas(cantEntregas);
 	}
 
 	public int getId() {
@@ -52,6 +54,14 @@ public class Clase {
 
 	public String getCurso() {
 		return curso;
+	}
+
+	public int getCantEntregas() {
+		return cantEntregas;
+	}
+
+	private void setCantEntregas(int cantEntregas) {
+		this.cantEntregas = cantEntregas;
 	}
 
 	private void setCurso(String curso) {

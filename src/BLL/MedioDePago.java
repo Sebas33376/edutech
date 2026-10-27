@@ -10,11 +10,12 @@ public class MedioDePago {
 	private String numero;
 	private LocalDate fechaVencimiento;
 	private String codigoSeguridad;
-	private TipoDePago tipo;
+	//private TipoDePago tipo;
+	private String tipo;
 	private String nombre;
 
 	public MedioDePago(int id, int userId, String titular, String numero, LocalDate fechaVencimiento,
-			String codigoSeguridad, TipoDePago tipo, String nombre) {
+			String codigoSeguridad, String tipo, String nombre) {
 		setId(id);
 		setUserId(userId);
 		setTitular(titular);
@@ -27,7 +28,7 @@ public class MedioDePago {
 	
 	
 	public MedioDePago(int userId, String titular, String numero, LocalDate fechaVencimiento,
-			String codigoSeguridad, TipoDePago tipo, String nombre) {
+			String codigoSeguridad, String tipo, String nombre) {
 		setUserId(userId);
 		setTitular(titular);
 		setNumero(numero);
@@ -61,7 +62,7 @@ public class MedioDePago {
 		return codigoSeguridad;
 	}
 	
-	public TipoDePago getTipo() {
+	public String getTipo() {
 		return tipo;
 	}
 	
@@ -93,7 +94,7 @@ public class MedioDePago {
 		this.codigoSeguridad = codigoSeguridad;
 	}
 	
-	private void setTipo(TipoDePago tipo) {
+	private void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
 	

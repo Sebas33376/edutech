@@ -28,7 +28,7 @@ public class ControllerMedioDePago {
 				LocalDate fechaVencimiento = rs.getDate("fecha_vencimiento").toLocalDate();
 				String codigoSeguridad = rs.getString("cod_seguridad");
 				String nombre = rs.getString("nombre");
-				TipoDePago tipo = TipoDePago.valueOf(rs.getString("tipo").toUpperCase());
+				String tipo = rs.getString("tipo");
 				
 				medioDePago = new MedioDePago(id, userId, titular, numero, fechaVencimiento, codigoSeguridad, tipo, nombre);
 			}
@@ -53,7 +53,7 @@ public class ControllerMedioDePago {
 				LocalDate fechaVencimiento = rs.getDate("fecha_vencimiento").toLocalDate();
 				String codigoSeguridad = rs.getString("cod_seguridad");
 				String nombre = rs.getString("nombre");
-				TipoDePago tipo = TipoDePago.valueOf(rs.getString("tipo").toUpperCase());
+				String tipo = rs.getString("tipo").toUpperCase();
 				
 				mediosDePago.add(new MedioDePago(id, userId, titular, numero, fechaVencimiento, codigoSeguridad, tipo, nombre));
 			}

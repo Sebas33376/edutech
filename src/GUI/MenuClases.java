@@ -42,13 +42,13 @@ public class MenuClases extends JFrame {
 
 		clases = ControllerClase.getClasesByCurso(cursoId, usuario.getId());
 
-		model = new DefaultTableModel(new Object[] { "Título", "Clase", "Descripción", "Curso" }, 0);
+		model = new DefaultTableModel(new Object[] { "Título", "Clase", "Descripción", "Curso", "Tareas entregadas" }, 0);
 
 		table = new JTable(model);
 
 		model.setRowCount(0);
 		for (Clase clase : clases) {
-			model.addRow(new Object[] { clase.getTitulo(), clase.getUrl(), clase.getDescripcion(), clase.getCurso() });
+			model.addRow(new Object[] { clase.getTitulo(), clase.getUrl(), clase.getDescripcion(), clase.getCurso(), clase.getCantEntregas() });
 		}
 
 		JPanel panel = new JPanel();
@@ -68,20 +68,28 @@ public class MenuClases extends JFrame {
 		btnEditar.setBounds(137, 25, 130, 52);
 		panel.add(btnEditar);
 		
+		JButton btnTareas = new JButton("Ver tareas");
+		btnTareas.setBounds(404, 25, 130, 52);
+		btnTareas.setEnabled(false);
+		btnTareas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TareasMenu menu = new TareasMenu(claseSeleccionada, usuario);
+				menu.setVisible(true);
+				dispose();
+			}
+		});
+		panel.add(btnTareas);
+		
 		table.getSelectionModel().addListSelectionListener(e -> {
 			if (!e.getValueIsAdjusting()) {
 				int row = table.getSelectedRow();
 				if (row != -1) {
 					claseSeleccionada = clases.get(row);
 					btnEditar.setEnabled(true);
+					btnTareas.setEnabled(true);
 				}
 			}
 		});
-
-		JButton btnTareas = new JButton("Ver tareas");
-		btnTareas.setBounds(404, 25, 130, 52);
-		panel.add(btnTareas);
-
 
 		JToolBar toolBar = new JToolBar();
 		toolBar.setBounds(10, 10, 178, 443);
