@@ -18,23 +18,23 @@ public abstract class Usuario {
 	public Usuario(int id, String userName, String nombre, String apellido, String contrasena, boolean activo,
 			String email) {
 
-		this.id = id;
-		this.userName = userName;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.contrasena = contrasena;
-		this.activo = activo;
-		this.email = email;
+		setId(id);
+		setUserName(userName);
+		setNombre(nombre);
+		setApellido(apellido);
+		setContrasena(contrasena);
+		setActivo(activo);
+		setEmail(email);
 	}
 
 	public Usuario(int id, String userName, String nombre, String apellido, boolean activo, String email) {
 
-		this.id = id;
-		this.userName = userName;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.activo = activo;
-		this.email = email;
+		setId(id);
+		setUserName(userName);
+		setNombre(nombre);
+		setApellido(apellido);
+		setActivo(activo);
+		setEmail(email);
 	}
 
 	public int getId() {

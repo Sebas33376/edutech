@@ -1,5 +1,9 @@
 package BLL;
 
+import javax.swing.JOptionPane;
+
+import DLL.ControllerClase;
+
 public class Clase {
 
 	private int id;
@@ -7,6 +11,7 @@ public class Clase {
 	private String url;
 	private String descripcion;
 	private int cursoId;
+	private String curso;
 	
 	public Clase(int id, String titulo, String url, String descripcion, int cursoId) {
 		setId(id);
@@ -14,6 +19,15 @@ public class Clase {
 		setUrl(url);
 		setDescripcion(descripcion);
 		setCursoId(cursoId);
+	}
+	
+	public Clase(int id, String titulo, String url, String descripcion, int cursoId, String curso) {
+		setId(id);
+		setTitulo(titulo);
+		setUrl(url);
+		setDescripcion(descripcion);
+		setCursoId(cursoId);
+		setCurso(curso);
 	}
 
 	public int getId() {
@@ -36,6 +50,14 @@ public class Clase {
 		return cursoId;
 	}
 
+	public String getCurso() {
+		return curso;
+	}
+
+	private void setCurso(String curso) {
+		this.curso = curso;
+	}
+
 	private void setId(int id) {
 		this.id = id;
 	}
@@ -54,6 +76,16 @@ public class Clase {
 
 	private void setCursoId(int cursoId) {
 		this.cursoId = cursoId;
+	}
+	
+	public static boolean editarClase(Clase clase) {
+		boolean exito = false;
+		if (clase.getTitulo().isEmpty() || clase.getUrl().isEmpty() || clase.getDescripcion().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Datos incorrectos");
+		} else {
+			exito = ControllerClase.editClase(clase);
+		}
+		return exito;
 	}
 
 	@Override
