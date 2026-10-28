@@ -1,6 +1,5 @@
 package GUI;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -11,17 +10,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import BLL.Administrador;
 import BLL.Alumno;
 import BLL.Curso;
 import BLL.Inscripcion;
 import BLL.MedioDePago;
-import BLL.Profesor;
 import BLL.Usuario;
 import DLL.ControllerMedioDePago;
 
-import javax.swing.JSpinner;
-import javax.swing.JSeparator;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import java.awt.Font;

@@ -1,14 +1,12 @@
 package DLL;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
 import BLL.Entrega;
-import BLL.Estado;
 
 public class ControllerEntrega {
 	private static Connection conexion = Conexion.getInstance().getConnection();
@@ -33,5 +31,21 @@ public class ControllerEntrega {
 		}
 		
 		return entregas;
+	}
+
+	public static boolean editEntrega(Entrega entrega) {
+		try {
+			PreparedStatement stmt = conexion
+					.prepareStatement("UPDATE entregas SET estado = ?, correccion = ? WHERE id = ?");
+			stmt.setString(2, "Corregido");
+			stmt.setString(3, entrega.getCorreccion());
+			stmt.setInt(4, entrega.getId());
+			int filas = stmt.executeUpdate();
+			return filas > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
 	}
 }

@@ -1,14 +1,10 @@
 package GUI;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import BLL.Administrador;
-import BLL.Alumno;
-import BLL.Profesor;
 import BLL.Usuario;
 
 import javax.swing.JLabel;

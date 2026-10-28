@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 
 import BLL.MedioDePago;
-import BLL.TipoDePago;
 
 public class ControllerMedioDePago {
 

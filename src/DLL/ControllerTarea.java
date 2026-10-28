@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import BLL.Tarea;
-import BLL.TipoDeEntrega;
 
 public class ControllerTarea {
 	private static Connection conexion = Conexion.getInstance().getConnection();

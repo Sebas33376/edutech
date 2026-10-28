@@ -1,6 +1,5 @@
 package GUI;
 
-import java.awt.EventQueue;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,7 +9,6 @@ import javax.swing.border.EmptyBorder;
 
 import BLL.Curso;
 import BLL.Usuario;
-import javax.swing.JToolBar;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;

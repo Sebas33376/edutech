@@ -17,10 +17,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import BLL.Clase;
-import BLL.Curso;
 import BLL.Usuario;
 import DLL.ControllerClase;
-import DLL.ControllerCurso;
 
 public class MenuClases extends JFrame {
 
@@ -56,7 +54,7 @@ public class MenuClases extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-		JButton btnEditar = new JButton("Editar");
+		JButton btnEditar = new JButton("Editar Clase");
 		btnEditar.setEnabled(false);
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -68,7 +66,7 @@ public class MenuClases extends JFrame {
 		btnEditar.setBounds(137, 25, 130, 52);
 		panel.add(btnEditar);
 		
-		JButton btnTareas = new JButton("Ver tareas");
+		JButton btnTareas = new JButton("Ver entregas");
 		btnTareas.setBounds(404, 25, 130, 52);
 		btnTareas.setEnabled(false);
 		btnTareas.addActionListener(new ActionListener() {
