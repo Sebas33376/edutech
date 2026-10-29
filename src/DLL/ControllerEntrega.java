@@ -15,7 +15,7 @@ public class ControllerEntrega {
 		LinkedList<Entrega> entregas = new LinkedList<>();
 		
 		try {
-			PreparedStatement stmt = conexion.prepareStatement("SELECT e.id, e.alumno_fk , u.userName, e.fecha, e.estado FROM entregas e INNER JOIN usuarios u ON e.alumno_fk = u.id WHERE e.tarea_fk = ?");
+			PreparedStatement stmt = conexion.prepareStatement("SELECT e.id, e.alumno_fk , u.userName, e.fecha, e.estado, e.correccion FROM entregas e INNER JOIN usuarios u ON e.alumno_fk = u.id WHERE e.tarea_fk = ?");
 			stmt.setInt(1, tareaId);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -24,7 +24,8 @@ public class ControllerEntrega {
 				String estado = rs.getString("estado");
 				String alumno = rs.getString("userName");
 				LocalDate fecha = rs.getDate("fecha").toLocalDate();
-				entregas.add(new Entrega(id, alumnoId, tareaId, estado, alumno, fecha));
+				String correccion = rs.getString("correccion");
+				entregas.add(new Entrega(id, alumnoId, tareaId, estado, alumno, fecha, correccion));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -37,9 +38,9 @@ public class ControllerEntrega {
 		try {
 			PreparedStatement stmt = conexion
 					.prepareStatement("UPDATE entregas SET estado = ?, correccion = ? WHERE id = ?");
-			stmt.setString(2, "Corregido");
-			stmt.setString(3, entrega.getCorreccion());
-			stmt.setInt(4, entrega.getId());
+			stmt.setString(1, "Corregido");
+			stmt.setString(2, entrega.getCorreccion());
+			stmt.setInt(3, entrega.getId());
 			int filas = stmt.executeUpdate();
 			return filas > 0;
 		} catch (Exception e) {

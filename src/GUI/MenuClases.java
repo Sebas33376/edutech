@@ -29,7 +29,7 @@ public class MenuClases extends JFrame {
 	private LinkedList<Clase> clases;
 	private Clase claseSeleccionada;
 
-	public MenuClases(Usuario usuario, int cursoId) {
+	public MenuClases(int cursoId) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 897, 500);
 		contentPane = new JPanel();
@@ -38,15 +38,25 @@ public class MenuClases extends JFrame {
 		setTitle("Clases");
 		contentPane.setLayout(null);
 
+		Usuario usuario = Usuario.logueado;
+
+		if (usuario == null) {
+			PantallaPrincipal inicio = new PantallaPrincipal();
+			inicio.setVisible(true);
+			dispose();
+		}
+
 		clases = ControllerClase.getClasesByCurso(cursoId, usuario.getId());
 
-		model = new DefaultTableModel(new Object[] { "Título", "Clase", "Descripción", "Curso", "Tareas entregadas" }, 0);
+		model = new DefaultTableModel(new Object[] { "Título", "Clase", "Descripción", "Curso", "Tarea","Entregas" },
+				0);
 
 		table = new JTable(model);
 
 		model.setRowCount(0);
 		for (Clase clase : clases) {
-			model.addRow(new Object[] { clase.getTitulo(), clase.getUrl(), clase.getDescripcion(), clase.getCurso(), clase.getCantEntregas() });
+			model.addRow(new Object[] { clase.getTitulo(), clase.getUrl(), clase.getDescripcion(), clase.getCurso(),
+					clase.isHasTarea()? "Si" : "No",clase.getCantEntregas() == 0 ? "Sin entregas" : clase.getCantEntregas() });
 		}
 
 		JPanel panel = new JPanel();
@@ -58,33 +68,46 @@ public class MenuClases extends JFrame {
 		btnEditar.setEnabled(false);
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				EditarClase editMenu = new EditarClase(claseSeleccionada, usuario);
+				EditarClase editMenu = new EditarClase(claseSeleccionada);
 				editMenu.setVisible(true);
 				dispose();
 			}
 		});
-		btnEditar.setBounds(137, 25, 130, 52);
+		btnEditar.setBounds(470, 25, 130, 52);
 		panel.add(btnEditar);
-		
-		JButton btnTareas = new JButton("Ver entregas");
-		btnTareas.setBounds(404, 25, 130, 52);
+
+		JButton btnTareas = new JButton("Ver tarea");
+		btnTareas.setBounds(70, 25, 130, 52);
 		btnTareas.setEnabled(false);
 		btnTareas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TareasMenu menu = new TareasMenu(claseSeleccionada, usuario);
+				MenuTareas menu = new MenuTareas(claseSeleccionada);
 				menu.setVisible(true);
 				dispose();
 			}
 		});
 		panel.add(btnTareas);
-		
+
+		JButton btnAgregarTarea = new JButton("Agregar tarea");
+		btnAgregarTarea.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AgregarTarea agregar = new AgregarTarea(claseSeleccionada);
+				agregar.setVisible(true);
+				dispose();
+			}
+		});
+		btnAgregarTarea.setEnabled(false);
+		btnAgregarTarea.setBounds(270, 25, 130, 52);
+		panel.add(btnAgregarTarea);
+
 		table.getSelectionModel().addListSelectionListener(e -> {
 			if (!e.getValueIsAdjusting()) {
 				int row = table.getSelectedRow();
 				if (row != -1) {
 					claseSeleccionada = clases.get(row);
 					btnEditar.setEnabled(true);
-					btnTareas.setEnabled(true);
+					btnAgregarTarea.setEnabled(!claseSeleccionada.isHasTarea());
+					btnTareas.setEnabled(claseSeleccionada.isHasTarea());
 				}
 			}
 		});
@@ -100,7 +123,7 @@ public class MenuClases extends JFrame {
 		btnMiPerfil.setMargin(new Insets(10, 14, 10, 14));
 		btnMiPerfil.setBorder(new EmptyBorder(0, 0, 0, 0));
 		btnMiPerfil.addActionListener(e -> {
-			PerfilUsuario perfilAlumno = new PerfilUsuario(usuario);
+			PerfilUsuario perfilAlumno = new PerfilUsuario();
 			perfilAlumno.setVisible(true);
 			dispose();
 		});
@@ -110,7 +133,7 @@ public class MenuClases extends JFrame {
 		btnCursos.setMargin(new Insets(10, 14, 10, 14));
 		btnCursos.setBorder(new EmptyBorder(0, 0, 0, 0));
 		btnCursos.addActionListener(e -> {
-			MenuCursos menu = new MenuCursos(usuario);
+			MenuCursos menu = new MenuCursos();
 			menu.setVisible(true);
 			dispose();
 		});
@@ -119,6 +142,7 @@ public class MenuClases extends JFrame {
 		JButton btnCerrarSesion = new JButton("Cerrar Sesión");
 		btnCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Usuario.logueado = null;
 				PantallaPrincipal inicio = new PantallaPrincipal();
 				inicio.setVisible(true);
 				dispose();

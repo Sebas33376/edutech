@@ -17,7 +17,6 @@ public class ControllerInscripcion {
 	
 	public static boolean inscribirAlumno(int alumnoId, int cursoId, int medioDePagoId) {
 		try {
-			System.out.println("Alumno: " + alumnoId + "Curso: " + cursoId + "Medio de pago: " + medioDePagoId);
 			PreparedStatement stmt = conexion.prepareStatement(
 					"INSERT INTO inscripciones (user_id, curso_id, fecha_inscripcion, medio_de_pago_fk) VALUES (?,?,?,?)");
 			stmt.setInt(1, alumnoId);

@@ -13,6 +13,7 @@ public class Clase {
 	private int cursoId;
 	private String curso;
 	private int cantEntregas;
+	private boolean hasTarea;
 	
 	public Clase(int id, String titulo, String url, String descripcion, int cursoId) {
 		setId(id);
@@ -22,7 +23,7 @@ public class Clase {
 		setCursoId(cursoId);
 	}
 	
-	public Clase(int id, String titulo, String url, String descripcion, int cursoId, String curso, int cantEntregas) {
+	public Clase(int id, String titulo, String url, String descripcion, int cursoId, String curso, int cantEntregas, boolean hasTarea) {
 		setId(id);
 		setTitulo(titulo);
 		setUrl(url);
@@ -30,6 +31,7 @@ public class Clase {
 		setCursoId(cursoId);
 		setCurso(curso);
 		setCantEntregas(cantEntregas);
+		setHasTarea(hasTarea);
 	}
 
 	public int getId() {
@@ -58,6 +60,14 @@ public class Clase {
 
 	public int getCantEntregas() {
 		return cantEntregas;
+	}
+
+	public boolean isHasTarea() {
+		return hasTarea;
+	}
+
+	private void setHasTarea(boolean hasTarea) {
+		this.hasTarea = hasTarea;
 	}
 
 	private void setCantEntregas(int cantEntregas) {

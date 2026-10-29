@@ -26,17 +26,25 @@ public class PantallaPago extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
-	public PantallaPago(Usuario usuario, Curso curso) {
+	public PantallaPago(Curso curso) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 714, 416);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 
+		Usuario usuario = Usuario.logueado;
+
+		if (usuario == null) {
+			PantallaPrincipal inicio = new PantallaPrincipal();
+			inicio.setVisible(true);
+			dispose();
+		}
+
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuCursos menu = new MenuCursos(usuario);
+				MenuCursos menu = new MenuCursos();
 				menu.setVisible(true);
 				dispose();
 			}
@@ -58,7 +66,7 @@ public class PantallaPago extends JFrame {
 		JLabel lblHtml = new JLabel(html(curso));
 		lblHtml.setBounds(136, 60, 427, 156);
 		contentPane.add(lblHtml);
-		
+
 		JButton btnPagar = new JButton("Pagar");
 		btnPagar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnPagar.setBounds(263, 293, 173, 43);
@@ -68,8 +76,9 @@ public class PantallaPago extends JFrame {
 				if (usuario instanceof Alumno) {
 					int select = comboBox.getSelectedIndex();
 					System.out.println(curso);
-					boolean exito = Inscripcion.Inscribirce(usuario.getId(), curso.getId(), mediosDePago.get(select).getId());
-					PantallaComprado comprado = new PantallaComprado(exito, usuario);
+					boolean exito = Inscripcion.Inscribirce(usuario.getId(), curso.getId(),
+							mediosDePago.get(select).getId());
+					PantallaComprado comprado = new PantallaComprado(exito);
 					comprado.setVisible(true);
 					dispose();
 				}

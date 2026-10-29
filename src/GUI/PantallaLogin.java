@@ -55,13 +55,13 @@ public class PantallaLogin extends JFrame {
 		JButton btnLogin = new JButton("Iniciar sesión");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Usuario logueado = Usuario.Login(inputUsaurio.getText(), inputContrasena.getText());
+				Usuario.logueado = Usuario.Login(inputUsaurio.getText(), inputContrasena.getText());
 
-				if (logueado == null) {
+				if (Usuario.logueado == null) {
 					JOptionPane.showConfirmDialog(null, "El usuario o contraseña son incorrectos");
 				} else {
 
-					MenuCursos menu = new MenuCursos(logueado);
+					MenuCursos menu = new MenuCursos();
 					menu.setVisible(true);
 					dispose();
 

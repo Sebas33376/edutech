@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 import DLL.ControllerUsuario;
 
 public abstract class Usuario {
-
+    public static Usuario logueado = null;
 	private int id;
 	private String userName;
 	private String nombre;

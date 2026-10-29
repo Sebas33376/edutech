@@ -1,6 +1,5 @@
 package GUI;
 
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,7 +17,7 @@ public class DetalleCurso extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
-	public DetalleCurso(Curso curso, Usuario usuario) {
+	public DetalleCurso(Curso curso) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 677, 416);
 		contentPane = new JPanel();
@@ -26,17 +25,25 @@ public class DetalleCurso extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+		Usuario usuario = Usuario.logueado;
+
+		if (usuario == null) {
+			PantallaPrincipal inicio = new PantallaPrincipal();
+			inicio.setVisible(true);
+			dispose();
+		}
+
 		JButton btnInscripcion = new JButton("Anotarse al curso");
 		btnInscripcion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PantallaPago pantallaPago = new PantallaPago(usuario, curso);
+				PantallaPago pantallaPago = new PantallaPago(curso);
 				pantallaPago.setVisible(true);
 				dispose();
 			}
 		});
 		btnInscripcion.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnInscripcion.setBounds(258, 325, 146, 44);
-		
+
 		contentPane.add(btnInscripcion);
 
 		JLabel detalles = new JLabel("<html><h2>" + curso.getTitulo() + "</h2>" + "<p>" + curso.getDescripcion()
@@ -48,7 +55,7 @@ public class DetalleCurso extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuCursos menu = new MenuCursos(usuario);
+				MenuCursos menu = new MenuCursos();
 				menu.setVisible(true);
 				dispose();
 			}

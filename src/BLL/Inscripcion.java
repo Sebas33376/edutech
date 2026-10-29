@@ -88,10 +88,8 @@ public class Inscripcion {
 	}
 	
 	public static boolean Inscribirce(int alumnoId, int cursoId, int medioDePagoId) {
-		if (alumnoId == 0 && cursoId == 0 && medioDePagoId == 0) {
-			return false;
-		}
-			return ControllerInscripcion.inscribirAlumno(alumnoId, cursoId, medioDePagoId);
+		
+			return alumnoId == 0 && cursoId == 0 && medioDePagoId == 0 ? false : ControllerInscripcion.inscribirAlumno(alumnoId, cursoId, medioDePagoId);
 		}
 
 	
