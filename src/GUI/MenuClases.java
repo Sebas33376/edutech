@@ -139,7 +139,7 @@ public class MenuClases extends JFrame {
 
 		if (usuario instanceof Profesor) {
 			panel.add(btnAgregarTarea);
-			panel.add(btnEditar);
+			panel.add(btnEditar); 
 		}
 		table.getSelectionModel().addListSelectionListener(e -> {
 			if (!e.getValueIsAdjusting()) {
