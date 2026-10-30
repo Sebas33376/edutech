@@ -62,10 +62,6 @@ public class AgregarTarea extends JFrame {
 			lista.addElement(opcion.substring(0,1) + opcion.substring(1).toLowerCase());
 		}
 		
-		JComboBox<String> comboBox = new JComboBox<>(lista);
-		comboBox.setBounds(160, 168, 265, 30);
-		contentPane.add(comboBox);
-		
 		JLabel lblUrl = new JLabel("URL de la clase");
 		lblUrl.setBounds(160, 97, 88, 14);
 		contentPane.add(lblUrl);
@@ -74,6 +70,20 @@ public class AgregarTarea extends JFrame {
 		tfUrl.setColumns(10);
 		tfUrl.setBounds(160, 112, 265, 30);
 		contentPane.add(tfUrl);
+		
+		JComboBox<String> comboBox = new JComboBox<>(lista);
+		comboBox.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        String tipo = (String) comboBox.getSelectedItem();
+		        boolean habilitarUrl = "Choice".equals(tipo);
+
+		        lblUrl.setEnabled(habilitarUrl);
+		        tfUrl.setEnabled(habilitarUrl);
+		    }
+		});
+		comboBox.setBounds(160, 168, 265, 30);
+		contentPane.add(comboBox);
+		
 		
 		JLabel lblDescripcion = new JLabel("Descripción");
 		lblDescripcion.setBounds(160, 209, 75, 14);
@@ -100,7 +110,7 @@ public class AgregarTarea extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String tipo = (String) comboBox.getSelectedItem();
 				System.out.println(tipo);
-				Tarea newTarea = new Tarea(tfTitulo.getText(),  textArea.getText(), tipo , tfUrl.getText(),clase.getId());
+				Tarea newTarea = new Tarea(tfTitulo.getText(),  textArea.getText(), tipo ,  tipo.equals("Choice")? tfUrl.getText() : "" ,clase.getId());
 				boolean exito = Tarea.AgregarTarea(newTarea);
 				PantallaTareaAgregada agregarTarea = new PantallaTareaAgregada(exito,curso);
 				agregarTarea.setVisible(true);

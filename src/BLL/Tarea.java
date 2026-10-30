@@ -78,13 +78,22 @@ public class Tarea {
 	}
 
 	public static boolean AgregarTarea(Tarea tarea) {
-		return tarea.getTitulo().isEmpty() || tarea.getUrl().isEmpty() || tarea.getDescripcion().isEmpty() ? false
+		return tarea.getTitulo().isEmpty() || (!tarea.getUrl().isEmpty() && tarea.getTipo().equals("Entregable")) || tarea.getDescripcion().isEmpty() ? false
 				: ControllerTarea.setTarea(tarea);
+	}
+
+	public static boolean editTarea(Tarea tarea) {
+		return tarea.getTitulo().isEmpty() ||(!tarea.getUrl().isEmpty() && tarea.getTipo().equals("Entregable"))|| tarea.getDescripcion().isEmpty() ? false
+				: ControllerTarea.editTarea(tarea);
 	}
 
 	@Override
 	public String toString() {
-		return "Tarea [id=" + id + ", tipo=" + tipo + ", url=" + url + ", clase=" + claseId + "]";
+		return "Tarea [id=" + id + ", titulo=" + titulo + ", descripcion=" + descripcion + ", tipo=" + tipo + ", url="
+				+ url + ", claseId=" + claseId + "]";
 	}
+	
+	
+
 
 }

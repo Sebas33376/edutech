@@ -23,8 +23,6 @@ public class EditarTarea extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField tfTitulo;
-	private JTextField tfUrl;
 
 	public EditarTarea(Tarea tarea, Clase clase, Curso curso) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,7 +45,7 @@ public class EditarTarea extends JFrame {
 		lblTitulo.setBounds(160, 41, 46, 14);
 		contentPane.add(lblTitulo);
 
-		tfTitulo = new JTextField(tarea.getTitulo());
+		JTextField tfTitulo = new JTextField(tarea.getTitulo());
 		tfTitulo.setBounds(160, 56, 265, 30);
 		contentPane.add(tfTitulo);
 		tfTitulo.setColumns(10);
@@ -61,18 +59,32 @@ public class EditarTarea extends JFrame {
 			lista.addElement(opcion.substring(0, 1) + opcion.substring(1).toLowerCase());
 		}
 
-		JComboBox<String> comboBox = new JComboBox<>(lista);
-		comboBox.setBounds(160, 168, 265, 30);
-		contentPane.add(comboBox);
-
 		JLabel lblUrl = new JLabel("URL de la clase");
 		lblUrl.setBounds(160, 97, 88, 14);
 		contentPane.add(lblUrl);
 
-		tfUrl = new JTextField(tarea.getUrl());
+		JTextField tfUrl = new JTextField(tarea.getUrl());
 		tfUrl.setColumns(10);
 		tfUrl.setBounds(160, 112, 265, 30);
 		contentPane.add(tfUrl);
+
+		JComboBox<String> comboBox = new JComboBox<>(lista);
+		comboBox.setSelectedItem(tarea.getTipo());
+		boolean habilitarUrl = "Choice".equals(tarea.getTipo());
+
+		lblUrl.setEnabled(habilitarUrl);
+		tfUrl.setEnabled(habilitarUrl);
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String tipo = (String) comboBox.getSelectedItem();
+				boolean habilitarUrl = "Choice".equals(tipo);
+
+				lblUrl.setEnabled(habilitarUrl);
+				tfUrl.setEnabled(habilitarUrl);
+			}
+		});
+		comboBox.setBounds(160, 168, 265, 30);
+		contentPane.add(comboBox);
 
 		JLabel lblDescripcion = new JLabel("Descripción");
 		lblDescripcion.setBounds(160, 209, 75, 14);
@@ -98,10 +110,9 @@ public class EditarTarea extends JFrame {
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String tipo = (String) comboBox.getSelectedItem();
-				System.out.println(tipo);
-				Tarea newTarea = new Tarea(tfTitulo.getText(), textArea.getText(), tipo, tfUrl.getText(),
-						clase.getId());
-				boolean exito = Tarea.AgregarTarea(newTarea);
+				Tarea newTarea = new Tarea(tarea.getId(), tfTitulo.getText(), textArea.getText(), tipo,
+						tipo.equals("Choice") ? tfUrl.getText() : "", clase.getId());
+				boolean exito = Tarea.editTarea(newTarea);
 				PantallaTareaEditada editada = new PantallaTareaEditada(exito, curso);
 				editada.setVisible(true);
 				dispose();

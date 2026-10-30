@@ -56,9 +56,21 @@ public class MenuTareas extends JFrame {
 		tarea = ControllerTarea.getTarea(clase.getId());
 
 		entregas = ControllerEntrega.getEntregasByTp(tarea.getId());
+		
+		String urlSection = tarea.getTipo().equals("Choice")
+		        ? "<p><b>URL:</b><br>" + tarea.getUrl() + "</p>"
+		        : "";
 
-		JLabel detalles = new JLabel("<html><h2>" + tarea.getTitulo() + "</h2>" + "<p>" + tarea.getTitulo() + "</p>"
-				+ "<p>" + tarea.getDescripcion() + "</p>" + tarea.getUrl() + "</p> </html>");
+		String html = "<html>"
+		        + "<body>"
+		        + "<h2>" + tarea.getTitulo() + "</h2>"
+		        + "<p><b>Tipo:</b> " + tarea.getTipo() + "</p>"
+		        + "<p><b>Descripción:</b><br>" + tarea.getDescripcion() + "</p>"
+		        + urlSection
+		        + "</body>"
+		        + "</html>";
+
+		JLabel detalles = new JLabel(html);
 		detalles.setBounds(10, 65, 440, 266);
 		contentPane.add(detalles);
 
@@ -98,10 +110,19 @@ public class MenuTareas extends JFrame {
 				}
 			}
 		});
+		JLabel sinEntregas = new JLabel("<html><H1>No hay entregas</H1></html>");
+		sinEntregas.setHorizontalAlignment(SwingConstants.CENTER);
+		sinEntregas.setBounds(469, 65, 520, 266);
+		
+		if (entregas.size() > 0) {
+			JScrollPane scrollPane = new JScrollPane(table);
+			scrollPane.setBounds(460, 11, 540, 404);
+			getContentPane().add(scrollPane);
+		} else {
+			contentPane.add(sinEntregas);
+		}
 
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(460, 11, 540, 404);
-		getContentPane().add(scrollPane);
+		
 
 		panel = new JPanel();
 		panel.setBounds(10, 342, 440, 73);

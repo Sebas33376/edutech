@@ -101,8 +101,6 @@ public abstract class Usuario {
 		Usuario.controller = controller;
 	}
 
-	public abstract void Menu();
-
 	public static Usuario Login(String nombre, String contrasenia) {
 		if (nombre.isEmpty() || contrasenia.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Datos incorrectos");

@@ -2,7 +2,6 @@ package BLL;
 
 import java.time.LocalDate;
 
-import javax.swing.JOptionPane;
 
 import DLL.ControllerInscripcion;
 

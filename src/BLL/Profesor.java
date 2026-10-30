@@ -11,17 +11,17 @@ public class Profesor extends Usuario {
 	public Profesor(int id, String userName, String nombre, String apellido, String contrasena, boolean activo, String email ,
 			String legajo, String profesion, int categoriaId) {
 		super(id, userName, nombre, apellido, contrasena, activo, email);
-		this.legajo = legajo;
-		this.profesion = profesion;
-		this.categoriaId = categoriaId;
+		setLegajo(legajo);
+		setProfesion(profesion);
+		setCategoria(categoriaId);
 	}
 	
 	public Profesor(int id, String userName, String nombre, String apellido, boolean activo, String email ,
 			String legajo, String profesion, int categoriaId) {
 		super(id, userName, nombre, apellido,  activo, email);
-		this.legajo = legajo;
-		this.profesion = profesion;
-		this.categoriaId = categoriaId;
+		setLegajo(legajo);
+		setProfesion(profesion);
+		setCategoria(categoriaId);
 	}
 
 	public String getLegajo() {
@@ -53,11 +53,6 @@ public class Profesor extends Usuario {
 		return "Profesor [" + super.toString() + " legajo=" + legajo + ", profesion=" + profesion + ", categoria=" + categoriaId + "]";
 	}
 
-	@Override
-	public void Menu() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	
 	

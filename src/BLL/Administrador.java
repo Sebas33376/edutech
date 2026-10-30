@@ -29,11 +29,6 @@ public class Administrador extends Usuario {
 		return "Administrador [" + super.toString() + " categoria=" + categoriaId + "]";
 	}
 
-	@Override
-	public void Menu() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	
 }
