@@ -20,6 +20,14 @@ public class Alumno extends Usuario {
 		this.setFechaIngreso(fechaIngreso);
 		
 	}
+	
+	public Alumno(int id, String userName, String nombre, String apellido, String contrasena, boolean activo, String email, LocalDate fechaIngreso) {
+		super(id, userName, nombre, apellido, contrasena, activo, email);
+		// TODO Auto-generated constructor stub
+		
+		setFechaIngreso(LocalDate.now());
+		
+	}
 
 	public LocalDate getFechaIngreso() {
 		return fechaIngreso;

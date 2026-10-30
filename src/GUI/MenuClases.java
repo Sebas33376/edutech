@@ -16,9 +16,15 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import BLL.Administrador;
+import BLL.Alumno;
 import BLL.Clase;
+import BLL.Curso;
+import BLL.Profesor;
 import BLL.Usuario;
 import DLL.ControllerClase;
+import DLL.ControllerInscripcion;
+import javax.swing.JLabel;
 
 public class MenuClases extends JFrame {
 
@@ -29,9 +35,9 @@ public class MenuClases extends JFrame {
 	private LinkedList<Clase> clases;
 	private Clase claseSeleccionada;
 
-	public MenuClases(int cursoId) {
+	public MenuClases(Curso curso) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 897, 500);
+		setBounds(100, 100, 1120, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		setContentPane(contentPane);
@@ -45,61 +51,96 @@ public class MenuClases extends JFrame {
 			inicio.setVisible(true);
 			dispose();
 		}
+		if (usuario instanceof Alumno) {
+			clases = ControllerClase.getClasesByCurso(curso.getId());
+			model = new DefaultTableModel(
+					new Object[] { "Título", "Clase", "Descripción", "Curso", "Tarea", "Entregado" }, 0);
+			model.setRowCount(0);
+			for (Clase clase : clases) {
+				model.addRow(new Object[] { clase.getTitulo(), clase.getUrl(), clase.getDescripcion(), clase.getCurso(),
+						clase.isHasTarea() ? "Tiene" : "No tiene",
+						clase.getEntregado()});
+			}
+		} else if (usuario instanceof Profesor) {
+			clases = ControllerClase.getClasesByCursoAndProfesor(curso.getId(), usuario.getId());
+			model = new DefaultTableModel(
+					new Object[] { "Título", "Clase", "Descripción", "Curso", "Tarea", "Entregas" }, 0);
+			model.setRowCount(0);
+			for (Clase clase : clases) {
+				model.addRow(new Object[] { clase.getTitulo(), clase.getUrl(), clase.getDescripcion(), clase.getCurso(),
+						clase.isHasTarea() ? "Tiene" : "No tiene",
+						clase.getCantEntregas() == 0 ? "Sin entregas" : clase.getCantEntregas() });
+			}
+		} else if (usuario instanceof Administrador) {
 
-		clases = ControllerClase.getClasesByCurso(cursoId, usuario.getId());
-
-		model = new DefaultTableModel(new Object[] { "Título", "Clase", "Descripción", "Curso", "Tarea","Entregas" },
-				0);
-
-		table = new JTable(model);
-
-		model.setRowCount(0);
-		for (Clase clase : clases) {
-			model.addRow(new Object[] { clase.getTitulo(), clase.getUrl(), clase.getDescripcion(), clase.getCurso(),
-					clase.isHasTarea()? "Si" : "No",clase.getCantEntregas() == 0 ? "Sin entregas" : clase.getCantEntregas() });
 		}
 
+		table = new JTable(model);
 		JPanel panel = new JPanel();
-		panel.setBounds(198, 350, 673, 103);
+		panel.setBounds(198, 384, 896, 69);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-		JButton btnEditar = new JButton("Editar Clase");
-		btnEditar.setEnabled(false);
-		btnEditar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				EditarClase editMenu = new EditarClase(claseSeleccionada);
-				editMenu.setVisible(true);
-				dispose();
-			}
-		});
-		btnEditar.setBounds(470, 25, 130, 52);
-		panel.add(btnEditar);
-
 		JButton btnTareas = new JButton("Ver tarea");
-		btnTareas.setBounds(70, 25, 130, 52);
+		btnTareas.setBounds(70, 11, 130, 47);
 		btnTareas.setEnabled(false);
 		btnTareas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuTareas menu = new MenuTareas(claseSeleccionada);
+				System.out.println(claseSeleccionada);
+				MenuTareas menu = new MenuTareas(claseSeleccionada, curso);
 				menu.setVisible(true);
 				dispose();
 			}
 		});
-		panel.add(btnTareas);
+		
 
 		JButton btnAgregarTarea = new JButton("Agregar tarea");
 		btnAgregarTarea.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AgregarTarea agregar = new AgregarTarea(claseSeleccionada);
+				AgregarTarea agregar = new AgregarTarea(claseSeleccionada, curso);
 				agregar.setVisible(true);
 				dispose();
 			}
 		});
 		btnAgregarTarea.setEnabled(false);
-		btnAgregarTarea.setBounds(270, 25, 130, 52);
-		panel.add(btnAgregarTarea);
+		btnAgregarTarea.setBounds(270, 11, 130, 47);
+		
+		
+		JButton btnEditar = new JButton("Editar Clase");
+		btnEditar.setEnabled(false);
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EditarClase editMenu = new EditarClase(claseSeleccionada, curso);
+				editMenu.setVisible(true);
+				dispose();
+			}
+		});
+		btnEditar.setBounds(470, 11, 130, 47);
+		
+		JButton btnComprar = new JButton("Comprar curso");
+		btnComprar.setBounds(670, 11, 150, 47);
+		btnComprar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PantallaPago pantallaPago = new PantallaPago(curso);
+				pantallaPago.setVisible(true);
+				dispose();
+			}
+		});
+		if (usuario instanceof Alumno) {
+			boolean estaInscripto = ControllerInscripcion.getInscripcionesByAlumnoId(usuario.getId()).stream()
+					.anyMatch(inscripcion -> inscripcion.getCursoId() == curso.getId());
+			btnComprar.setVisible(!estaInscripto);
+			btnTareas.setVisible(!estaInscripto);
+		} else {
+			btnComprar.setVisible(false);
+		}
+		panel.add(btnTareas);
+		panel.add(btnComprar);
 
+		if (usuario instanceof Profesor) {
+			panel.add(btnAgregarTarea);
+			panel.add(btnEditar);
+		}
 		table.getSelectionModel().addListSelectionListener(e -> {
 			if (!e.getValueIsAdjusting()) {
 				int row = table.getSelectedRow();
@@ -150,12 +191,19 @@ public class MenuClases extends JFrame {
 		});
 
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(198, 10, 675, 340);
+		scrollPane.setBounds(196, 104, 898, 269);
 		getContentPane().add(scrollPane);
 		btnCerrarSesion.setMargin(new Insets(10, 14, 10, 14));
 		btnCerrarSesion.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		toolBar.add(btnCerrarSesion);
+
+		String html = "<html><H1>" + curso.getTitulo() + "</H1><span>" + curso.getCategoria() + "</span><p>"
+				+ curso.getDescripcion() + "</p></html>";
+
+		JLabel lblCurso = new JLabel(html);
+		lblCurso.setBounds(196, 10, 675, 85);
+		contentPane.add(lblCurso);
 		setVisible(true);
 
 	}

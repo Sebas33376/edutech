@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import BLL.Clase;
+import BLL.Curso;
 import BLL.Usuario;
 
 import javax.swing.JTextField;
@@ -21,7 +22,7 @@ public class EditarClase extends JFrame {
 	private JTextField tfTitulo;
 	private JTextField tfUrl;
 
-	public EditarClase(Clase clase) {
+	public EditarClase(Clase clase, Curso curso) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 601, 500);
 		contentPane = new JPanel();
@@ -67,7 +68,7 @@ public class EditarClase extends JFrame {
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuClases menu = new MenuClases(clase.getCursoId());
+				MenuClases menu = new MenuClases(curso);
 				menu.setVisible(true);
 				dispose();
 			}
@@ -82,7 +83,7 @@ public class EditarClase extends JFrame {
 				Clase claseEdit = new Clase(clase.getId(), tfTitulo.getText(), tfUrl.getText(), textArea.getText(),
 						clase.getCursoId());
 				boolean exito = Clase.editarClase(claseEdit);
-				PantallaClaseEditada editado = new PantallaClaseEditada(exito, clase.getCursoId());
+				PantallaClaseEditada editado = new PantallaClaseEditada(exito, curso);
 				editado.setVisible(true);
 				dispose();
 			}

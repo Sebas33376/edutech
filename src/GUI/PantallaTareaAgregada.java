@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import BLL.Curso;
 import BLL.Usuario;
 import javax.swing.SwingConstants;
 
@@ -14,7 +15,7 @@ public class PantallaTareaAgregada extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
-	public PantallaTareaAgregada(boolean exito, int cursoId) {
+	public PantallaTareaAgregada(boolean exito, Curso curso) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -49,7 +50,7 @@ public class PantallaTareaAgregada extends JFrame {
 		JButton btnVolver = new JButton("Volver al inicio");
 		btnVolver.setBounds(145, 210, 143, 40);
 		btnVolver.addActionListener(e -> {
-			MenuClases menu = new MenuClases(cursoId);
+			MenuClases menu = new MenuClases(curso);
 			menu.setVisible(true);
 			dispose();
 		});

@@ -13,7 +13,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import BLL.Clase;
+import BLL.Curso;
 import BLL.Entrega;
+import BLL.Profesor;
 import BLL.Tarea;
 import BLL.Usuario;
 import DLL.ControllerEntrega;
@@ -34,7 +36,7 @@ public class MenuTareas extends JFrame {
 	private JButton btnCorregir;
 	private JButton btnVolver;
 
-	public MenuTareas(Clase clase) {
+	public MenuTareas(Clase clase, Curso curso) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1026, 500);
 		contentPane = new JPanel();
@@ -50,7 +52,7 @@ public class MenuTareas extends JFrame {
 			inicio.setVisible(true);
 			dispose();
 		}
-
+      
 		tarea = ControllerTarea.getTarea(clase.getId());
 
 		entregas = ControllerEntrega.getEntregasByTp(tarea.getId());
@@ -74,7 +76,7 @@ public class MenuTareas extends JFrame {
 		btnCorregir.setEnabled(false);
 		btnCorregir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				EditarEntrega edit = new EditarEntrega(entregaSeleccionado, clase);
+				EditarEntrega edit = new EditarEntrega(entregaSeleccionado, clase, curso);
 				edit.setVisible(true);
 				dispose();
 
@@ -106,24 +108,26 @@ public class MenuTareas extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-		panel.add(btnCorregir);
 
 		JButton btnEditar = new JButton("Editar tarea");
 		btnEditar.setBounds(181, 11, 145, 51);
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-             EditarTarea editar = new EditarTarea(tarea, clase);
+             EditarTarea editar = new EditarTarea(tarea, clase, curso);
              editar.setVisible(true);
              dispose();
 			}
 		});
-		panel.add(btnEditar);
+		if (usuario instanceof Profesor) {
+			panel.add(btnCorregir);
+			panel.add(btnEditar);
+		}
 
 		btnVolver = new JButton("Volver");
 		btnVolver.setBounds(10, 11, 152, 43);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuClases menu = new MenuClases(clase.getCursoId());
+				MenuClases menu = new MenuClases(curso);
 				menu.setVisible(true);
 				dispose();
 			}

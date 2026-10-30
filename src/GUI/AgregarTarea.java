@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import BLL.Clase;
+import BLL.Curso;
 import BLL.Tarea;
 import BLL.TipoDeEntrega;
 import BLL.Usuario;
@@ -26,7 +27,7 @@ public class AgregarTarea extends JFrame {
 	private JTextField tfTitulo;
 	private JTextField tfUrl;
 
-	public AgregarTarea(Clase clase) {
+	public AgregarTarea(Clase clase, Curso curso) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 601, 500);
 		contentPane = new JPanel();
@@ -85,7 +86,7 @@ public class AgregarTarea extends JFrame {
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuClases menu = new MenuClases(clase.getCursoId());
+				MenuClases menu = new MenuClases(curso);
 				menu.setVisible(true);
 				dispose();
 			}
@@ -101,7 +102,7 @@ public class AgregarTarea extends JFrame {
 				System.out.println(tipo);
 				Tarea newTarea = new Tarea(tfTitulo.getText(),  textArea.getText(), tipo , tfUrl.getText(),clase.getId());
 				boolean exito = Tarea.AgregarTarea(newTarea);
-				PantallaTareaAgregada agregarTarea = new PantallaTareaAgregada(exito,clase.getCursoId());
+				PantallaTareaAgregada agregarTarea = new PantallaTareaAgregada(exito,curso);
 				agregarTarea.setVisible(true);
 				dispose();
 			}

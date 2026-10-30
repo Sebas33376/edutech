@@ -13,6 +13,7 @@ public class Clase {
 	private int cursoId;
 	private String curso;
 	private int cantEntregas;
+	private String entregado;
 	private boolean hasTarea;
 	
 	public Clase(int id, String titulo, String url, String descripcion, int cursoId) {
@@ -23,6 +24,17 @@ public class Clase {
 		setCursoId(cursoId);
 	}
 	
+	public Clase(int id, String titulo, String url, String descripcion, int cursoId, String curso, boolean hasTarea) {
+		setId(id);
+		setTitulo(titulo);
+		setUrl(url);
+		setDescripcion(descripcion);
+		setCursoId(cursoId);
+		setCurso(curso);
+		setHasTarea(hasTarea);
+	}
+	
+	
 	public Clase(int id, String titulo, String url, String descripcion, int cursoId, String curso, int cantEntregas, boolean hasTarea) {
 		setId(id);
 		setTitulo(titulo);
@@ -31,6 +43,17 @@ public class Clase {
 		setCursoId(cursoId);
 		setCurso(curso);
 		setCantEntregas(cantEntregas);
+		setHasTarea(hasTarea);
+	}
+	
+	public Clase(int id, String titulo, String url, String descripcion, int cursoId, String curso, String Entregado, boolean hasTarea) {
+		setId(id);
+		setTitulo(titulo);
+		setUrl(url);
+		setDescripcion(descripcion);
+		setCursoId(cursoId);
+		setCurso(curso);
+		setEntregado(Entregado);
 		setHasTarea(hasTarea);
 	}
 
@@ -64,6 +87,14 @@ public class Clase {
 
 	public boolean isHasTarea() {
 		return hasTarea;
+	}
+
+	public String getEntregado() {
+		return entregado;
+	}
+
+	private void setEntregado(String entregado) {
+		this.entregado = entregado;
 	}
 
 	private void setHasTarea(boolean hasTarea) {

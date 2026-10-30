@@ -11,6 +11,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import BLL.Clase;
+import BLL.Curso;
 import BLL.Entrega;
 import BLL.Usuario;
 import javax.swing.SwingConstants;
@@ -20,7 +21,7 @@ public class EditarEntrega extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
-	public EditarEntrega(Entrega entrega, Clase clase) {
+	public EditarEntrega(Entrega entrega, Clase clase, Curso curso) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 601, 500);
 		contentPane = new JPanel();
@@ -55,7 +56,7 @@ public class EditarEntrega extends JFrame {
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuTareas menu = new MenuTareas(clase);
+				MenuTareas menu = new MenuTareas(clase, curso);
 				menu.setVisible(true);
 				dispose();
 			}
@@ -70,7 +71,7 @@ public class EditarEntrega extends JFrame {
 				Entrega entregaEdit = new Entrega(entrega.getId(), entrega.getAlumnoId(), entrega.getTareaId(),
 						"Corregido", entrega.getFecha(), textArea.getText());
 				boolean exito = Entrega.editarEntrega(entregaEdit);
-				PantallaEntregaEditada editado = new PantallaEntregaEditada(exito, clase.getCursoId());
+				PantallaEntregaEditada editado = new PantallaEntregaEditada(exito, curso);
 				editado.setVisible(true);
 				dispose();
 			}

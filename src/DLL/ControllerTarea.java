@@ -29,6 +29,7 @@ public class ControllerTarea {
 	}
 	
 	public static Tarea getTarea(int claseId) {
+		System.out.println(claseId);
 		Tarea tarea = null;
 		try {
 			PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM tareas WHERE clase_fk = ?");

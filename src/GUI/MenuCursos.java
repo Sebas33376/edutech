@@ -30,6 +30,7 @@ import java.awt.EventQueue;
 import java.awt.Insets;
 
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.awt.event.ActionEvent;
 
 public class MenuCursos extends JFrame {
@@ -38,16 +39,21 @@ public class MenuCursos extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private DefaultTableModel model;
+	private Curso cursoSeleccionado;
 	private LinkedList<Inscripcion> inscripciones;
 	private LinkedList<Curso> cursos;
+	private LinkedList<Curso> cursosEnTabla;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Usuario.logueado = new Profesor(3, "prof_juan", "Juan", "Pérez",
+					// Usuario.logueado = new Profesor(3, "prof_juan", "Juan", "Pérez",
+					// "$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
+					// "juan.perez@davinci.edu.ar", "LEG-101", "Ingeniero en Sistemas", 1);
+					Usuario.logueado = new Alumno(6, "alum_lucas", "Lucas", "Silva",
 							"$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
-							"juan.perez@davinci.edu.ar", "LEG-101", "Ingeniero en Sistemas", 1);
+							"lucas.silva@gmail.com", LocalDate.parse("2026-03-01"));
 					MenuCursos frame = new MenuCursos();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -59,15 +65,15 @@ public class MenuCursos extends JFrame {
 
 	public MenuCursos() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 897, 500);
+		setBounds(100, 100, 1120, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		setContentPane(contentPane);
 		setTitle("Cursos");
 		contentPane.setLayout(null);
-		
+
 		Usuario usuario = Usuario.logueado;
-		
+
 		if (usuario == null) {
 			PantallaPrincipal inicio = new PantallaPrincipal();
 			inicio.setVisible(true);
@@ -75,7 +81,7 @@ public class MenuCursos extends JFrame {
 		}
 
 		JToolBar toolBar = new JToolBar();
-		toolBar.setBounds(10, 10, 178, 443);
+		toolBar.setBounds(10, 10, 178, 440);
 		toolBar.setOrientation(SwingConstants.VERTICAL);
 		toolBar.setLayout(new BoxLayout(toolBar, BoxLayout.Y_AXIS));
 		toolBar.setFloatable(false);
@@ -90,6 +96,24 @@ public class MenuCursos extends JFrame {
 			dispose();
 		});
 		toolBar.add(btnMiPerfil);
+
+		JPanel panel = new JPanel();
+		panel.setBounds(198, 386, 896, 64);
+		contentPane.add(panel);
+		panel.setLayout(null);
+
+		JButton btnVerCurso = new JButton("Ver curso");
+		btnVerCurso.setBounds(10, 11, 155, 42);
+		btnVerCurso.setEnabled(false);
+		btnVerCurso.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MenuClases detalle = new MenuClases(cursoSeleccionado);
+				detalle.setVisible(true);
+				dispose();
+			}
+		});
+		panel.add(btnVerCurso);
+
 		if (usuario instanceof Alumno) {
 			cursos = ControllerCurso.mostrarCursos();
 			inscripciones = ControllerInscripcion.getInscripcionesByAlumnoId(usuario.getId());
@@ -102,10 +126,8 @@ public class MenuCursos extends JFrame {
 				if (!e.getValueIsAdjusting()) {
 					int row = table.getSelectedRow();
 					if (row != -1) {
-						Curso cursoSeleccionado = cursos.get(row);
-						DetalleCurso detalle = new DetalleCurso(cursoSeleccionado);
-						detalle.setVisible(true);
-						dispose();
+						cursoSeleccionado = cursosEnTabla.get(row);
+						btnVerCurso.setEnabled(true);
 					}
 				}
 			});
@@ -129,14 +151,13 @@ public class MenuCursos extends JFrame {
 			model = new DefaultTableModel(new Object[] { "Título", "Descripción", "Categoría", "Activo" }, 0);
 			table = new JTable(model);
 			table.getSelectionModel().addListSelectionListener(e -> {
-
 				if (!e.getValueIsAdjusting()) {
 					int row = table.getSelectedRow();
 					if (row != -1) {
-						Curso cursoSeleccionado = cursos.get(row);
-						MenuClases detalle = new MenuClases(cursoSeleccionado.getId());
-						detalle.setVisible(true);
-						dispose();
+						btnVerCurso.setEnabled(true);
+						cursoSeleccionado = cursosEnTabla.get(row);
+						System.out.println(cursoSeleccionado);
+
 					}
 				}
 			});
@@ -160,22 +181,25 @@ public class MenuCursos extends JFrame {
 		});
 
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(198, 10, 675, 443);
+		scrollPane.setBounds(198, 10, 896, 365);
 		getContentPane().add(scrollPane);
 		btnCerrarSesion.setMargin(new Insets(10, 14, 10, 14));
 		btnCerrarSesion.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		toolBar.add(btnCerrarSesion);
 		setVisible(true);
+
 	}
 
 	private void getCursos(LinkedList<Curso> cursos, DefaultTableModel model) {
 		model.setRowCount(0);
+		cursosEnTabla = new LinkedList<>();
 		for (Curso curso : cursos) {
 			if (curso.isActivo()) {
 				String precio = String.format("$%.2f", curso.getPrecio());
 				model.addRow(new Object[] { curso.getTitulo(), curso.getDescripcion(), curso.getCategoria(),
 						curso.getProfesor(), precio });
+				cursosEnTabla.add(curso);
 			}
 		}
 
@@ -183,23 +207,26 @@ public class MenuCursos extends JFrame {
 
 	private void getCursosImpartidos(LinkedList<Curso> cursos, DefaultTableModel model) {
 		model.setRowCount(0);
-		List<Curso> cursosByProfesor = cursos.stream().filter(curso -> curso.getProfesorId() == Usuario.logueado.getId())
-				.collect(Collectors.toList());
+		cursosEnTabla = new LinkedList<>();
+		List<Curso> cursosByProfesor = cursos.stream()
+				.filter(curso -> curso.getProfesorId() == Usuario.logueado.getId()).collect(Collectors.toList());
 		for (Curso curso : cursosByProfesor) {
 			model.addRow(new Object[] { curso.getTitulo(), curso.getDescripcion(), curso.getCategoria(),
 					curso.isActivo() ? "Activo" : "Inactivo" });
-
+			cursosEnTabla.add(curso);
 		}
 
 	};
 
 	private void getInscripciones(LinkedList<Inscripcion> inscripciones, DefaultTableModel model) {
 		model.setRowCount(0);
+		cursosEnTabla = new LinkedList<>();
 		for (Inscripcion inscripcion : inscripciones) {
 			Curso curso = ControllerCurso.getCursoById(inscripcion.getCursoId());
 			String precio = String.format("$%.2f", curso.getPrecio());
 			model.addRow(new Object[] { curso.getTitulo(), curso.getDescripcion(), curso.getCategoria(),
 					curso.getProfesor(), precio });
+			cursosEnTabla.add(curso);
 		}
 	}
 }
