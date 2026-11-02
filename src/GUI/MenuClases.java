@@ -81,12 +81,11 @@ public class MenuClases extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-		JButton btnTareas = new JButton("Ver tarea");
+		JButton btnTareas = new JButton("Ver clase");
 		btnTareas.setBounds(70, 11, 130, 47);
 		btnTareas.setEnabled(false);
 		btnTareas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(claseSeleccionada);
 				MenuTareas menu = new MenuTareas(claseSeleccionada, curso);
 				menu.setVisible(true);
 				dispose();
@@ -130,7 +129,7 @@ public class MenuClases extends JFrame {
 			boolean estaInscripto = ControllerInscripcion.getInscripcionesByAlumnoId(usuario.getId()).stream()
 					.anyMatch(inscripcion -> inscripcion.getCursoId() == curso.getId());
 			btnComprar.setVisible(!estaInscripto);
-			btnTareas.setVisible(!estaInscripto);
+			btnTareas.setVisible(estaInscripto);
 		} else {
 			btnComprar.setVisible(false);
 		}

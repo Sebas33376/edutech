@@ -58,14 +58,14 @@ public class MenuTareas extends JFrame {
 		entregas = ControllerEntrega.getEntregasByTp(tarea.getId());
 		
 		String urlSection = tarea.getTipo().equals("Choice")
-		        ? "<p><b>URL:</b><br>" + tarea.getUrl() + "</p>"
+		        ? "<p><b>URL: </b>" + tarea.getUrl() + "</p>"
 		        : "";
 
 		String html = "<html>"
 		        + "<body>"
 		        + "<h2>" + tarea.getTitulo() + "</h2>"
-		        + "<p><b>Tipo:</b> " + tarea.getTipo() + "</p>"
-		        + "<p><b>Descripción:</b><br>" + tarea.getDescripcion() + "</p>"
+		        + "<p><b>Tipo: </b> " + tarea.getTipo() + "</p>"
+		        + "<p><b>Descripción:</b>" + tarea.getDescripcion() + "</p>"
 		        + urlSection
 		        + "</body>"
 		        + "</html>";
@@ -84,7 +84,7 @@ public class MenuTareas extends JFrame {
 		}
 
 		btnCorregir = new JButton("Corregir entrega");
-		btnCorregir.setBounds(10, 11, 145, 51);
+		btnCorregir.setBounds(181, 11, 145, 51);
 		btnCorregir.setEnabled(false);
 		btnCorregir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -110,28 +110,14 @@ public class MenuTareas extends JFrame {
 				}
 			}
 		});
-		JLabel sinEntregas = new JLabel("<html><H1>No hay entregas</H1></html>");
-		sinEntregas.setHorizontalAlignment(SwingConstants.CENTER);
-		sinEntregas.setBounds(469, 65, 520, 266);
-		
-		if (entregas.size() > 0) {
-			JScrollPane scrollPane = new JScrollPane(table);
-			scrollPane.setBounds(460, 11, 540, 404);
-			getContentPane().add(scrollPane);
-		} else {
-			contentPane.add(sinEntregas);
-		}
-
-		
 
 		panel = new JPanel();
 		panel.setBounds(10, 342, 440, 73);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-
 		JButton btnEditar = new JButton("Editar tarea");
-		btnEditar.setBounds(181, 11, 145, 51);
+		btnEditar.setBounds(10, 11, 145, 51);
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
              EditarTarea editar = new EditarTarea(tarea, clase, curso);
@@ -140,6 +126,17 @@ public class MenuTareas extends JFrame {
 			}
 		});
 		if (usuario instanceof Profesor) {
+			JLabel sinEntregas = new JLabel("<html><H1>No hay entregas</H1></html>");
+			sinEntregas.setHorizontalAlignment(SwingConstants.CENTER);
+			sinEntregas.setBounds(469, 65, 520, 266);
+			
+			if (entregas.size() > 0) {
+				JScrollPane scrollPane = new JScrollPane(table);
+				scrollPane.setBounds(460, 11, 540, 404);
+				getContentPane().add(scrollPane);
+			} else {
+				contentPane.add(sinEntregas);
+			}
 			panel.add(btnCorregir);
 			panel.add(btnEditar);
 		}
