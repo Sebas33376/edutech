@@ -96,7 +96,7 @@ public class AgregarTarea extends JFrame {
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuClases menu = new MenuClases(curso);
+				DetalleCurso menu = new DetalleCurso(curso);
 				menu.setVisible(true);
 				dispose();
 			}

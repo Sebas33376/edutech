@@ -23,7 +23,7 @@ import DLL.ControllerTarea;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-public class MenuTareas extends JFrame {
+public class MenuTarea extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -36,7 +36,7 @@ public class MenuTareas extends JFrame {
 	private JButton btnCorregir;
 	private JButton btnVolver;
 
-	public MenuTareas(Clase clase, Curso curso) {
+	public MenuTarea(Clase clase, Curso curso) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1026, 500);
 		contentPane = new JPanel();
@@ -145,7 +145,7 @@ public class MenuTareas extends JFrame {
 		btnVolver.setBounds(10, 11, 152, 43);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuClases menu = new MenuClases(curso);
+				DetalleCurso menu = new DetalleCurso(curso);
 				menu.setVisible(true);
 				dispose();
 			}

@@ -56,7 +56,7 @@ public class EditarEntrega extends JFrame {
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuTareas menu = new MenuTareas(clase, curso);
+				MenuTarea menu = new MenuTarea(clase, curso);
 				menu.setVisible(true);
 				dispose();
 			}

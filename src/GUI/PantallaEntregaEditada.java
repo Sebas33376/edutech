@@ -50,7 +50,7 @@ public class PantallaEntregaEditada extends JFrame {
 		JButton btnVolver = new JButton("Volver al inicio");
 		btnVolver.setBounds(145, 210, 143, 40);
 		btnVolver.addActionListener(e -> {
-			MenuClases menu = new MenuClases(curso);
+			DetalleCurso menu = new DetalleCurso(curso);
 			menu.setVisible(true);
 			dispose();
 		});

@@ -49,11 +49,11 @@ public class MenuCursos extends JFrame {
 			public void run() {
 				try {
 					//Usuario.logueado = new Profesor(3, "prof_juan", "Juan", "Pérez",
-					//"$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
-					//"juan.perez@davinci.edu.ar", "LEG-101", "Ingeniero en Sistemas", 1);
-					Usuario.logueado = new Alumno(6, "alum_lucas", "Lucas", "Silva",
-							"$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
-							"lucas.silva@gmail.com", LocalDate.parse("2026-03-01"));
+						//	"$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
+							//"juan.perez@davinci.edu.ar", "LEG-101", "Ingeniero en Sistemas", 1);
+					 Usuario.logueado = new Alumno(6, "alum_lucas", "Lucas", "Silva",
+					 "$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
+					 "lucas.silva@gmail.com", LocalDate.parse("2026-03-01"));
 					MenuCursos frame = new MenuCursos();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -107,7 +107,7 @@ public class MenuCursos extends JFrame {
 		btnVerCurso.setEnabled(false);
 		btnVerCurso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuClases detalle = new MenuClases(cursoSeleccionado);
+				DetalleCurso detalle = new DetalleCurso(cursoSeleccionado);
 				detalle.setVisible(true);
 				dispose();
 			}
@@ -182,12 +182,13 @@ public class MenuCursos extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(198, 10, 896, 365);
 		getContentPane().add(scrollPane);
+	
+
+
 		btnCerrarSesion.setMargin(new Insets(10, 14, 10, 14));
 		btnCerrarSesion.setBorder(new EmptyBorder(0, 0, 0, 0));
-
 		toolBar.add(btnCerrarSesion);
 		setVisible(true);
-
 	}
 
 	private void getCursos(LinkedList<Curso> cursos, DefaultTableModel model) {
