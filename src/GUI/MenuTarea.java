@@ -52,23 +52,16 @@ public class MenuTarea extends JFrame {
 			inicio.setVisible(true);
 			dispose();
 		}
-      
+
 		tarea = ControllerTarea.getTarea(clase.getId());
 
 		entregas = ControllerEntrega.getEntregasByTp(tarea.getId());
-		
-		String urlSection = tarea.getTipo().equals("Choice")
-		        ? "<p><b>URL: </b>" + tarea.getUrl() + "</p>"
-		        : "";
 
-		String html = "<html>"
-		        + "<body>"
-		        + "<h2>" + tarea.getTitulo() + "</h2>"
-		        + "<p><b>Tipo: </b> " + tarea.getTipo() + "</p>"
-		        + "<p><b>Descripción:</b>" + tarea.getDescripcion() + "</p>"
-		        + urlSection
-		        + "</body>"
-		        + "</html>";
+		String urlSection = tarea.getTipo().equals("Choice") ? "<p><b>URL: </b>" + tarea.getUrl() + "</p>" : "";
+
+		String html = "<html>" + "<body>" + "<h2>" + tarea.getTitulo() + "</h2>" + "<p><b>Tipo: </b> " + tarea.getTipo()
+				+ "</p>" + "<p><b>Descripción:</b>" + tarea.getDescripcion() + "</p>" + urlSection + "</body>"
+				+ "</html>";
 
 		JLabel detalles = new JLabel(html);
 		detalles.setBounds(10, 65, 440, 266);
@@ -120,16 +113,16 @@ public class MenuTarea extends JFrame {
 		btnEditar.setBounds(10, 11, 145, 51);
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-             EditarTarea editar = new EditarTarea(tarea, clase, curso);
-             editar.setVisible(true);
-             dispose();
+				EditarTarea editar = new EditarTarea(tarea, clase, curso);
+				editar.setVisible(true);
+				dispose();
 			}
 		});
 		if (usuario instanceof Profesor) {
 			JLabel sinEntregas = new JLabel("<html><H1>No hay entregas</H1></html>");
 			sinEntregas.setHorizontalAlignment(SwingConstants.CENTER);
 			sinEntregas.setBounds(469, 65, 520, 266);
-			
+
 			if (entregas.size() > 0) {
 				JScrollPane scrollPane = new JScrollPane(table);
 				scrollPane.setBounds(460, 11, 540, 404);
@@ -145,7 +138,7 @@ public class MenuTarea extends JFrame {
 		btnVolver.setBounds(10, 11, 152, 43);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DetalleCurso menu = new DetalleCurso(curso);
+				DetalleClase menu = new DetalleClase(clase, curso);
 				menu.setVisible(true);
 				dispose();
 			}

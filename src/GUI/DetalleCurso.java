@@ -1,18 +1,14 @@
 package GUI;
 
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -107,7 +103,7 @@ public class DetalleCurso extends JFrame {
 		btnClase.setEnabled(false);
 		btnClase.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MenuTarea menu = new MenuTarea(claseSeleccionada, curso);
+				DetalleClase menu = new DetalleClase(claseSeleccionada, curso);
 				menu.setVisible(true);
 				dispose();
 			}
@@ -144,6 +140,7 @@ public class DetalleCurso extends JFrame {
 				dispose();
 			}
 		});
+		
 
 		if (usuario instanceof Alumno) {
 			boolean estaInscripto = ControllerInscripcion.getInscripcionesByAlumnoId(usuario.getId()).stream()
@@ -167,8 +164,8 @@ public class DetalleCurso extends JFrame {
 				if (row != -1) {
 					claseSeleccionada = clases.get(row);
 					btnEditar.setEnabled(true);
+					btnClase.setEnabled(true);
 					btnAgregarTarea.setEnabled(!claseSeleccionada.isHasTarea());
-					btnClase.setEnabled(claseSeleccionada.isHasTarea());
 				}
 			}
 		});
