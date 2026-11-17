@@ -46,7 +46,7 @@ public class ControllerMedioDePago {
 			ResultSet rs = stmt.executeQuery();
 			
 			while (rs.next()) {
-				int userId = rs.getInt("user_fk");
+				int medioId = rs.getInt("id");
 				String titular = rs.getString("titular");
 				String numero = rs.getString("numero");
 				LocalDate fechaVencimiento = rs.getDate("fecha_vencimiento").toLocalDate();
@@ -54,7 +54,7 @@ public class ControllerMedioDePago {
 				String nombre = rs.getString("nombre");
 				String tipo = rs.getString("tipo").toUpperCase();
 				
-				mediosDePago.add(new MedioDePago(id, userId, titular, numero, fechaVencimiento, codigoSeguridad, tipo, nombre));
+				mediosDePago.add(new MedioDePago(medioId, id, titular, numero, fechaVencimiento, codigoSeguridad, tipo, nombre));
 			}
 			
 		} catch (Exception e) {

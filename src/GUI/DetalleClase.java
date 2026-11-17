@@ -24,7 +24,7 @@ public class DetalleClase extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 		setContentPane(contentPane);
-		setTitle("Clase " + clase.getTitulo());
+		setTitle("Clase");
 		contentPane.setLayout(null);
 		
 	
@@ -44,7 +44,6 @@ public class DetalleClase extends JFrame {
 		
 		JButton btnTarea = new JButton("Ver Tarea");
 		btnTarea.setBounds(24, 11, 130, 47);
-		btnTarea.setEnabled(clase.isHasTarea());
 		btnTarea.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MenuTarea menu = new MenuTarea(clase, curso);
@@ -52,7 +51,7 @@ public class DetalleClase extends JFrame {
 				dispose();
 			}
 		});
-		panelActions.add(btnTarea);
+        if(clase.isHasTarea())panelActions.add(btnTarea);
 
 		String html = "<html><H1>" + clase.getTitulo() + "</H1><span>" + clase.getUrl() + "</span><p>"
 				+ clase.getDescripcion() + "</p></html>";
