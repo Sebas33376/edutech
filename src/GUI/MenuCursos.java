@@ -48,9 +48,9 @@ public class MenuCursos extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//Usuario.logueado = new Profesor(3, "prof_juan", "Juan", "Pérez",
-						//	"$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
-							//"juan.perez@davinci.edu.ar", "LEG-101", "Ingeniero en Sistemas", 1);
+//					Usuario.logueado = new Profesor(3, "prof_juan", "Juan", "Pérez",
+//							"$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
+//							"juan.perez@davinci.edu.ar", "LEG-101", "Ingeniero en Sistemas", 1);
 					 Usuario.logueado = new Alumno(6, "alum_lucas", "Lucas", "Silva",
 					 "$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
 					 "lucas.silva@gmail.com", LocalDate.parse("2026-03-01"));

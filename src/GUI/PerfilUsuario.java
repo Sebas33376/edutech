@@ -47,6 +47,27 @@ public class PerfilUsuario extends JFrame {
 		JLabel lblHtml = new JLabel(html(usuario));
 		lblHtml.setBounds(10, 36, 604, 96);
 		contentPane.add(lblHtml);
+		
+		if (usuario instanceof Alumno) {
+			JLabel lblMediosDePago = new JLabel("Medios de pago");
+			lblMediosDePago.setFont(new Font("Tahoma", Font.PLAIN, 13));
+			lblMediosDePago.setBounds(10, 150, 112, 20);
+			contentPane.add(lblMediosDePago);
+			
+			LinkedList<MedioDePago> mediosDePago = ControllerMedioDePago.getMediosDePagosByUsuario(usuario.getId());
+			DefaultTableModel model = new DefaultTableModel(new Object[] {"Nombre", "Fecha Vencimiento", "Tipo" }, 0);
+			
+			table = new JTable(model);
+			model.setRowCount(0);
+			LinkedList<MedioDePago> mediosEnTabla = new LinkedList<>();
+			for (MedioDePago medioDePago : mediosDePago) {
+				model.addRow(new Object[] {medioDePago.getNombre(), medioDePago.getFechaVencimiento(), medioDePago.getTipo() });
+				mediosEnTabla.add(medioDePago);
+			}
+			JScrollPane scrollPane = new JScrollPane(table);
+			scrollPane.setBounds(10, 180, 604, 180);
+			contentPane.add(scrollPane);
+		}
 
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
@@ -84,27 +105,6 @@ public class PerfilUsuario extends JFrame {
 			html += "<p>" + alumno.getUserName() + "</p>";
 			html += "<p>" + alumno.getEmail() + "</p>";
 			html += "<p>" + alumno.getFechaIngreso() + "</p>";
-
-			JLabel lblMediosDePago = new JLabel("Medios de pago");
-			lblMediosDePago.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			lblMediosDePago.setBounds(10, 150, 112, 20);
-			contentPane.add(lblMediosDePago);
-			
-			LinkedList<MedioDePago> mediosDePago = ControllerMedioDePago.getMediosDePagosByUsuario(usuario.getId());
-			DefaultTableModel model = new DefaultTableModel(new Object[] {"Nombre", "Titular", "Nuemro de tajeta", "Fecha Vencimiento", "Tipo" }, 0);
-			
-			table = new JTable(model);
-			table.setBounds(10, 180, 604, 180);
-			model.setRowCount(0);
-			LinkedList<MedioDePago> mediosEnTabla = new LinkedList<>();
-			for (MedioDePago medioDePago : mediosDePago) {
-				model.addRow(new Object[] {medioDePago.getNombre(), medioDePago.getTitular(), medioDePago.getNumero(), medioDePago.getFechaVencimiento(), medioDePago.getTipo() });
-				mediosEnTabla.add(medioDePago);
-			}
-			JScrollPane scrollPane = new JScrollPane(table);
-			scrollPane.setBounds(10, 180, 604, 180);
-			contentPane.add(scrollPane);
-			scrollPane.add(table);
 
 		}
 		

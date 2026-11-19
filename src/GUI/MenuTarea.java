@@ -12,6 +12,7 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import BLL.Alumno;
 import BLL.Clase;
 import BLL.Curso;
 import BLL.Entrega;
@@ -55,8 +56,6 @@ public class MenuTarea extends JFrame {
 
 		tarea = ControllerTarea.getTarea(clase.getId());
 
-		entregas = ControllerEntrega.getEntregasByTp(tarea.getId());
-
 		String urlSection = tarea.getTipo().equals("Choice") ? "<p><b>URL: </b>" + tarea.getUrl() + "</p>" : "";
 
 		String html = "<html>" + "<body>" + "<h2>" + tarea.getTitulo() + "</h2>" + "<p><b>Tipo: </b> " + tarea.getTipo()
@@ -67,58 +66,61 @@ public class MenuTarea extends JFrame {
 		detalles.setBounds(10, 65, 440, 266);
 		contentPane.add(detalles);
 
-		model = new DefaultTableModel(new Object[] { "Usuario", "Fecha entregada", "Estado" }, 0);
-
-		table = new JTable(model);
-
-		model.setRowCount(0);
-		for (Entrega entrega : entregas) {
-			model.addRow(new Object[] { entrega.getAlumno(), entrega.getFecha(), entrega.getEstado() });
-		}
-
-		btnCorregir = new JButton("Corregir entrega");
-		btnCorregir.setBounds(181, 11, 145, 51);
-		btnCorregir.setEnabled(false);
-		btnCorregir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				EditarEntrega edit = new EditarEntrega(entregaSeleccionado, clase, curso);
-				edit.setVisible(true);
-				dispose();
-
-			};
-		});
-
-		table.getSelectionModel().addListSelectionListener(e -> {
-
-			if (!e.getValueIsAdjusting()) {
-				int row = table.getSelectedRow();
-				if (row != -1) {
-					entregaSeleccionado = entregas.get(row);
-					if (entregaSeleccionado.getEstado().equals("Corregido")) {
-						btnCorregir.setText("Editar corrección");
-					} else {
-						btnCorregir.setText("Corregir entrega");
-					}
-					btnCorregir.setEnabled(true);
-				}
-			}
-		});
-
-		panel = new JPanel();
-		panel.setBounds(10, 342, 440, 73);
-		contentPane.add(panel);
-		panel.setLayout(null);
-
-		JButton btnEditar = new JButton("Editar tarea");
-		btnEditar.setBounds(10, 11, 145, 51);
-		btnEditar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				EditarTarea editar = new EditarTarea(tarea, clase, curso);
-				editar.setVisible(true);
-				dispose();
-			}
-		});
 		if (usuario instanceof Profesor) {
+
+			entregas = ControllerEntrega.getEntregasByTp(tarea.getId());
+			model = new DefaultTableModel(new Object[] { "Usuario", "Fecha entregada", "Estado" }, 0);
+
+			table = new JTable(model);
+
+			model.setRowCount(0);
+			for (Entrega entrega : entregas) {
+				model.addRow(new Object[] { entrega.getAlumno(), entrega.getFecha(), entrega.getEstado() });
+			}
+
+			btnCorregir = new JButton("Corregir entrega");
+			btnCorregir.setBounds(181, 11, 145, 51);
+			btnCorregir.setEnabled(false);
+			btnCorregir.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					EditarEntrega edit = new EditarEntrega(entregaSeleccionado, clase, curso);
+					edit.setVisible(true);
+					dispose();
+
+				};
+			});
+
+			table.getSelectionModel().addListSelectionListener(e -> {
+
+				if (!e.getValueIsAdjusting()) {
+					int row = table.getSelectedRow();
+					if (row != -1) {
+						entregaSeleccionado = entregas.get(row);
+						if (entregaSeleccionado.getEstado().equals("Corregido")) {
+							btnCorregir.setText("Editar corrección");
+						} else {
+							btnCorregir.setText("Corregir entrega");
+						}
+						btnCorregir.setEnabled(true);
+					}
+				}
+			});
+
+			panel = new JPanel();
+			panel.setBounds(10, 342, 440, 73);
+			contentPane.add(panel);
+			panel.setLayout(null);
+
+			JButton btnEditar = new JButton("Editar tarea");
+			btnEditar.setBounds(10, 11, 145, 51);
+			btnEditar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					EditarTarea editar = new EditarTarea(tarea, clase, curso);
+					editar.setVisible(true);
+					dispose();
+				}
+			});
+
 			JLabel sinEntregas = new JLabel("<html><H1>No hay entregas</H1></html>");
 			sinEntregas.setHorizontalAlignment(SwingConstants.CENTER);
 			sinEntregas.setBounds(469, 65, 520, 266);
@@ -132,6 +134,18 @@ public class MenuTarea extends JFrame {
 			}
 			panel.add(btnCorregir);
 			panel.add(btnEditar);
+		} else if (usuario instanceof Alumno) {
+			JButton btnEntregar = new JButton("Entregar tarea");
+			btnEntregar.setBounds(10, 400, 145, 51);
+			btnEntregar.setEnabled(clase.getEntregado().equals("No entregado")? true : false);
+			btnEntregar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					CrearEntrega editar = new CrearEntrega(tarea, clase, curso);
+					editar.setVisible(true);
+					dispose();
+				}
+			});
+			contentPane.add(btnEntregar);
 		}
 
 		btnVolver = new JButton("Volver");

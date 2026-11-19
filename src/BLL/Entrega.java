@@ -14,17 +14,39 @@ public class Entrega {
 	private String estado;
 	private LocalDate fecha;
 	private String correccion;
+	private byte[] archivo;
+	
+	public Entrega(int alumnoId, int tareaId) {
 
-	public Entrega(int id, int alumnoId, int tareaId, String estado) {
+		setAlumnoId(alumnoId);
+		setTareaId(tareaId);
+		setFecha(LocalDate.now());
+		
+
+	}
+
+	public Entrega(int alumnoId, int tareaId, byte[] archivo) {
+
+		setAlumnoId(alumnoId);
+		setTareaId(tareaId);
+		setFecha(LocalDate.now());
+		setArchivo(archivo);
+		
+
+	}
+	
+	public Entrega(int id, int alumnoId, int tareaId, String estado,byte[] archivo) {
 
 		setId(id);
 		setAlumnoId(alumnoId);
 		setTareaId(tareaId);
 		setEstado(estado);
 		setFecha(LocalDate.now());
+		setArchivo(archivo);
+		
 
 	}
-
+	
 	public Entrega(int id, int alumnoId, int tareaId, String estado, LocalDate date, String correccion) {
 
 		setId(id);
@@ -36,7 +58,19 @@ public class Entrega {
 
 	}
 
-	public Entrega(int id, int alumnoId, int tareaId, String estado, String alumno, LocalDate date) {
+	public Entrega(int id, int alumnoId, int tareaId, String estado, LocalDate date, String correccion, byte[] archivo) {
+
+		setId(id);
+		setAlumnoId(alumnoId);
+		setTareaId(tareaId);
+		setEstado(estado);
+		setFecha(date);
+		setCorreccion(correccion);
+		setArchivo(archivo);
+
+	}
+
+	public Entrega(int id, int alumnoId, int tareaId, String estado, String alumno, LocalDate date, byte[] archivo) {
 
 		setId(id);
 		setAlumnoId(alumnoId);
@@ -44,9 +78,10 @@ public class Entrega {
 		setEstado(estado);
 		setAlumno(alumno);
 		setFecha(date);
+		setArchivo(archivo);
 
 	}
-
+	
 	public Entrega(int id, int alumnoId, int tareaId, String estado, String alumno, LocalDate date, String correccion) {
 
 		setId(id);
@@ -56,6 +91,20 @@ public class Entrega {
 		setAlumno(alumno);
 		setFecha(date);
 		setCorreccion(correccion);
+		setArchivo(archivo);
+
+	}
+
+	public Entrega(int id, int alumnoId, int tareaId, String estado, String alumno, LocalDate date, String correccion, byte[] archivo) {
+
+		setId(id);
+		setAlumnoId(alumnoId);
+		setTareaId(tareaId);
+		setEstado(estado);
+		setAlumno(alumno);
+		setFecha(date);
+		setCorreccion(correccion);
+		setArchivo(archivo);
 
 	}
 
@@ -85,6 +134,14 @@ public class Entrega {
 
 	public String getCorreccion() {
 		return correccion;
+	}
+
+	public byte[] getArchivo() {
+		return archivo;
+	}
+
+	private void setArchivo(byte[] archivo) {
+		this.archivo = archivo;
 	}
 
 	private void setCorreccion(String correccion) {
@@ -122,6 +179,10 @@ public class Entrega {
 
 	public static boolean editarEntrega(Entrega entrega) {
 		return entrega.getCorreccion().isEmpty() ? false : ControllerEntrega.editEntrega(entrega);
+	}
+	
+	public static boolean crearEntrega(Entrega entrega) {
+		return ControllerEntrega.setEntrega(entrega);
 	}
 
 }
