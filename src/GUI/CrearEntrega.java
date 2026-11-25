@@ -52,11 +52,11 @@ public class CrearEntrega extends JFrame {
 
 		String titulo;
 
-		if (tarea.getTipo() == "Choice") {
+		if (tarea.getTipo().equals("Choice")) {
 
 			titulo = "Has click en el link para completar el formulario, una vez terminado has click en entregar.";
 			JLabel lblUrl = new JLabel(tarea.getUrl());
-			lblUrl.setBounds(259, 111, 46, 14);
+			lblUrl.setBounds(259, 111, 459, 43);
 			panel.add(lblUrl);
 		} else {
 			titulo = "Sube el archivo zip o rar.";
@@ -74,8 +74,7 @@ public class CrearEntrega extends JFrame {
 						File selectedFile = chooser.getSelectedFile();
 
 						String nombreArchivo = selectedFile.getName().toLowerCase();
-						if (!(nombreArchivo.endsWith(".jpg") || nombreArchivo.endsWith(".rar")
-								|| nombreArchivo.endsWith(".zip"))) {
+						if (!(nombreArchivo.endsWith(".rar") || nombreArchivo.endsWith(".zip"))) {
 							JOptionPane.showMessageDialog(null, "Solo se permiten archivos RAR o ZIP.");
 							return;
 						}
@@ -120,7 +119,9 @@ public class CrearEntrega extends JFrame {
 		btnEntregar.setBounds(232, 7, 126, 51);
 		btnEntregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (archivo != null) {
+				if (!"Choice".equals(tarea.getTipo()) && archivo == null) {
+					JOptionPane.showMessageDialog(null, "Debes seleccionar un archivo.");
+				} else if (archivo != null) {
 					Entrega newEntrega = new Entrega(usuario.getId(), tarea.getId(), archivo);
 					boolean exito = Entrega.crearEntrega(newEntrega);
 					PantallaEntregaCreada creado = new PantallaEntregaCreada(exito, curso);
