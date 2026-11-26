@@ -1,5 +1,9 @@
 package BLL;
 
+import java.util.LinkedList;
+
+import DLL.ControllerCurso;
+
 public class Curso {
 
 	private int id;
@@ -106,6 +110,13 @@ public class Curso {
 	
 	private void setProfesor(String profesor) {
 		this.profesor = profesor;
+	}
+	
+	public static boolean crear(Curso curso, LinkedList<Clase> clases, LinkedList<Tarea> tareas) {
+		if (curso.getTitulo().isEmpty() || clases.isEmpty() || clases.size() != tareas.size()) {
+			return false;
+		}
+		return ControllerCurso.crearCurso(curso, clases, tareas);
 	}
 
 	@Override

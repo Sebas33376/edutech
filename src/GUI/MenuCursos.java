@@ -48,12 +48,14 @@ public class MenuCursos extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-//					Usuario.logueado = new Profesor(3, "prof_juan", "Juan", "Pérez",
-//							"$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
-//							"juan.perez@davinci.edu.ar", "LEG-101", "Ingeniero en Sistemas", 1);
-					 Usuario.logueado = new Alumno(6, "alum_lucas", "Lucas", "Silva",
-					 "$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
-					 "lucas.silva@gmail.com", LocalDate.parse("2026-03-01"));
+					Usuario.logueado = new Profesor(3, "prof_juan", "Juan", "Pérez",
+							"$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
+							"juan.perez@davinci.edu.ar", "LEG-101", "Ingeniero en Sistemas", 1);
+					/*
+					 * Usuario.logueado = new Alumno(6, "alum_lucas", "Lucas", "Silva",
+					 * "$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
+					 * "lucas.silva@gmail.com", LocalDate.parse("2026-03-01"));
+					 */
 					MenuCursos frame = new MenuCursos();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -97,10 +99,10 @@ public class MenuCursos extends JFrame {
 		});
 		toolBar.add(btnMiPerfil);
 
-		JPanel panel = new JPanel();
-		panel.setBounds(198, 386, 896, 64);
-		contentPane.add(panel);
-		panel.setLayout(null);
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setBounds(198, 386, 896, 64);
+		contentPane.add(buttonsPanel);
+		buttonsPanel.setLayout(null);
 
 		JButton btnVerCurso = new JButton("Ver curso");
 		btnVerCurso.setBounds(10, 11, 155, 42);
@@ -112,7 +114,16 @@ public class MenuCursos extends JFrame {
 				dispose();
 			}
 		});
-		panel.add(btnVerCurso);
+		buttonsPanel.add(btnVerCurso);
+
+		JButton btnCrearCurso = new JButton("Crear curso");
+		btnCrearCurso.setBounds(175, 11, 155, 42);
+		btnCrearCurso.addActionListener(e -> {
+			CrearCurso crearForm = new CrearCurso();
+			crearForm.setVisible(true);
+			dispose();
+		});
+		buttonsPanel.add(btnCrearCurso);
 
 		if (usuario instanceof Alumno) {
 			cursos = ControllerCurso.mostrarCursos();
@@ -182,8 +193,6 @@ public class MenuCursos extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(198, 10, 896, 365);
 		getContentPane().add(scrollPane);
-	
-
 
 		btnCerrarSesion.setMargin(new Insets(10, 14, 10, 14));
 		btnCerrarSesion.setBorder(new EmptyBorder(0, 0, 0, 0));

@@ -137,7 +137,7 @@ public class MenuTarea extends JFrame {
 		} else if (usuario instanceof Alumno) {
 			JButton btnEntregar = new JButton("Entregar tarea");
 			btnEntregar.setBounds(10, 400, 145, 51);
-			btnEntregar.setEnabled(clase.getEntregado().equals("No entregado")? true : false);
+			btnEntregar.setEnabled(clase.getEntregado().equals("No entregado") ? true : false);
 			btnEntregar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					CrearEntrega editar = new CrearEntrega(tarea, clase, curso);

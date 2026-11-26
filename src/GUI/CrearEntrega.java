@@ -52,7 +52,7 @@ public class CrearEntrega extends JFrame {
 
 		String titulo;
 
-		if (tarea.getTipo() == "Choice") {
+		if (tarea.getTipo().equals("Choice")) {
 
 			titulo = "Has click en el link para completar el formulario, una vez terminado has click en entregar.";
 			JLabel lblUrl = new JLabel(tarea.getUrl());
@@ -120,19 +120,32 @@ public class CrearEntrega extends JFrame {
 		btnEntregar.setBounds(232, 7, 126, 51);
 		btnEntregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (archivo != null) {
-					Entrega newEntrega = new Entrega(usuario.getId(), tarea.getId(), archivo);
-					boolean exito = Entrega.crearEntrega(newEntrega);
-					PantallaEntregaCreada creado = new PantallaEntregaCreada(exito, curso);
-					creado.setVisible(true);
-					dispose();
-				} else {
-					Entrega newEntrega = new Entrega(usuario.getId(), tarea.getId());
-					boolean exito = Entrega.crearEntrega(newEntrega);
-					PantallaEntregaCreada creado = new PantallaEntregaCreada(exito, curso);
-					creado.setVisible(true);
-					dispose();
-				}
+		        if ("Choice".equals(tarea.getTipo())) {
+		            Entrega newEntrega = new Entrega(usuario.getId(), tarea.getId());
+		            boolean exito = Entrega.crearEntrega(newEntrega);
+
+		            PantallaEntregaCreada creado = new PantallaEntregaCreada(exito, curso);
+		            creado.setVisible(true);
+		            dispose();
+		            return;
+		        }
+
+		        if (archivo == null) {
+		            JOptionPane.showMessageDialog(
+		                CrearEntrega.this,
+		                "Debes subir un archivo antes de entregar.",
+		                "Archivo requerido",
+		                JOptionPane.WARNING_MESSAGE
+		            );
+		            return;
+		        }
+
+		        Entrega newEntrega = new Entrega(usuario.getId(), tarea.getId(), archivo);
+		        boolean exito = Entrega.crearEntrega(newEntrega);
+
+		        PantallaEntregaCreada creado = new PantallaEntregaCreada(exito, curso);
+		        creado.setVisible(true);
+		        dispose();
 			}
 		});
 		buttonsPanel.add(btnEntregar);
