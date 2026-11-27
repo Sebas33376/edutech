@@ -112,11 +112,32 @@ public class Curso {
 		this.profesor = profesor;
 	}
 	
+	
 	public static boolean crear(Curso curso, LinkedList<Clase> clases, LinkedList<Tarea> tareas) {
 		if (curso.getTitulo().isEmpty() || clases.isEmpty() || clases.size() != tareas.size()) {
 			return false;
 		}
 		return ControllerCurso.crearCurso(curso, clases, tareas);
+	}
+
+
+	public static boolean darDeAlta(Curso curso, double precio) {
+		if (!puedeAdministrar(curso) || precio <= 0) {
+			return false;
+		}
+		return ControllerCurso.activarCurso(curso.getId(), precio);
+	}
+
+	public static boolean darDeBaja(Curso curso) {
+		if (!puedeAdministrar(curso)) {
+			return false;
+		}
+		return ControllerCurso.desactivarCurso(curso.getId());
+	}
+
+	private static boolean puedeAdministrar(Curso curso) {
+		return Usuario.logueado instanceof Administrador
+				&& ((Administrador) Usuario.logueado).getCategoriaId() == curso.getCategoriaId();
 	}
 
 	@Override

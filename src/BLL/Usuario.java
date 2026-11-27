@@ -111,6 +111,10 @@ public abstract class Usuario {
 		}
 
 	}
+	
+	public static boolean registrar(Usuario usuario) {
+		return controller.agregarUsuario(usuario);
+	}
 
 	@Override
 	public String toString() {

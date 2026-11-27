@@ -1,10 +1,10 @@
 package GUI;
 
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import BLL.Administrador;
 import BLL.Usuario;
 
 import javax.swing.JLabel;
@@ -58,7 +58,7 @@ public class PantallaLogin extends JFrame {
 				Usuario.logueado = Usuario.Login(inputUsaurio.getText(), inputContrasena.getText());
 
 				if (Usuario.logueado == null) {
-					JOptionPane.showConfirmDialog(null, "El usuario o contraseña son incorrectos");
+					JOptionPane.showMessageDialog(null, "El usuario o contraseña son incorrectos");
 				} else {
 
 					MenuCursos menu = new MenuCursos();

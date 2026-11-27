@@ -11,6 +11,10 @@ import javax.swing.JFrame;
 
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import repository.Validaciones;
 
 import BLL.Alumno;
 import BLL.Curso;
@@ -43,27 +47,6 @@ public class MenuCursos extends JFrame {
 	private LinkedList<Inscripcion> inscripciones;
 	private LinkedList<Curso> cursos;
 	private LinkedList<Curso> cursosEnTabla;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Usuario.logueado = new Profesor(3, "prof_juan", "Juan", "Pérez",
-							"$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
-							"juan.perez@davinci.edu.ar", "LEG-101", "Ingeniero en Sistemas", 1);
-					/*
-					 * Usuario.logueado = new Alumno(6, "alum_lucas", "Lucas", "Silva",
-					 * "$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa", true,
-					 * "lucas.silva@gmail.com", LocalDate.parse("2026-03-01"));
-					 */
-					MenuCursos frame = new MenuCursos();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	public MenuCursos() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -123,6 +106,7 @@ public class MenuCursos extends JFrame {
 			crearForm.setVisible(true);
 			dispose();
 		});
+		btnCrearCurso.setVisible(usuario instanceof Profesor);
 		buttonsPanel.add(btnCrearCurso);
 
 		if (usuario instanceof Alumno) {
@@ -178,6 +162,98 @@ public class MenuCursos extends JFrame {
 			toolBar.add(btnCursos);
 
 		} else if (usuario instanceof Administrador) {
+			Administrador admin = (Administrador) usuario;
+			cursos = ControllerCurso.mostrarCursosByCategoria(admin.getCategoriaId());
+			model = new DefaultTableModel(new Object[] { "Título", "Descripción", "Profesor", "Precio", "Estado" }, 0);
+			table = new JTable(model);
+
+			JButton btnAlta = new JButton("Dar de alta");
+			btnAlta.setBounds(175, 11, 155, 42);
+			btnAlta.setEnabled(false);
+			buttonsPanel.add(btnAlta);
+
+			JButton btnBaja = new JButton("Dar de baja");
+			btnBaja.setBounds(340, 11, 155, 42);
+			btnBaja.setEnabled(false);
+			buttonsPanel.add(btnBaja);
+
+			JLabel lblPrecio = new JLabel("Precio");
+			lblPrecio.setBounds(510, 8, 100, 14);
+			buttonsPanel.add(lblPrecio);
+
+			JTextField tfPrecio = new JTextField();
+			tfPrecio.setBounds(510, 26, 120, 26);
+			tfPrecio.setEnabled(false);
+			buttonsPanel.add(tfPrecio);
+
+			table.getSelectionModel().addListSelectionListener(e -> {
+				if (!e.getValueIsAdjusting()) {
+					int row = table.getSelectedRow();
+					if (row != -1) {
+						cursoSeleccionado = cursosEnTabla.get(row);
+						boolean activo = cursoSeleccionado.isActivo();
+						btnVerCurso.setEnabled(true);
+						btnAlta.setEnabled(!activo);
+						btnBaja.setEnabled(activo);
+						tfPrecio.setEnabled(!activo);
+						tfPrecio.setText(activo || cursoSeleccionado.getPrecio() == 0 ? ""
+								: String.valueOf(cursoSeleccionado.getPrecio()));
+					} else {
+						btnVerCurso.setEnabled(false);
+						btnAlta.setEnabled(false);
+						btnBaja.setEnabled(false);
+						tfPrecio.setEnabled(false);
+						tfPrecio.setText("");
+					}
+				}
+			});
+
+			btnAlta.addActionListener(e -> {
+				if (!Validaciones.esPrecioValido(tfPrecio.getText())) {
+					JOptionPane.showMessageDialog(null, "Ingresá un precio válido, mayor a 0 (por ejemplo 15000 o 15000,50)");
+					return;
+				}
+				double precio = Validaciones.convertirPrecio(tfPrecio.getText());
+				if (Curso.darDeAlta(cursoSeleccionado, precio)) {
+					JOptionPane.showMessageDialog(null, "Curso dado de alta");
+					cursos = ControllerCurso.mostrarCursosByCategoria(admin.getCategoriaId());
+					getCursosAdministrador(cursos, model);
+				} else {
+					JOptionPane.showMessageDialog(null, "No se pudo dar de alta el curso");
+				}
+			});
+
+			btnBaja.addActionListener(e -> {
+				int respuesta = JOptionPane.showConfirmDialog(null,
+						"¿Dar de baja el curso \"" + cursoSeleccionado.getTitulo() + "\"?");
+				if (respuesta != JOptionPane.YES_OPTION) {
+					return;
+				}
+				if (Curso.darDeBaja(cursoSeleccionado)) {
+					JOptionPane.showMessageDialog(null, "Curso dado de baja");
+					cursos = ControllerCurso.mostrarCursosByCategoria(admin.getCategoriaId());
+					getCursosAdministrador(cursos, model);
+				} else {
+					JOptionPane.showMessageDialog(null, "No se pudo dar de baja el curso");
+				}
+			});
+
+			getCursosAdministrador(cursos, model);
+
+			JButton btnCursos = new JButton("Cursos");
+			btnCursos.setMargin(new Insets(10, 14, 10, 14));
+			btnCursos.setBorder(new EmptyBorder(0, 0, 0, 0));
+			toolBar.add(btnCursos);
+
+			JButton btnUsuarios = new JButton("Usuarios");
+			btnUsuarios.setMargin(new Insets(10, 14, 10, 14));
+			btnUsuarios.setBorder(new EmptyBorder(0, 0, 0, 0));
+			btnUsuarios.addActionListener(e -> {
+				MenuUsuarios menuUsuarios = new MenuUsuarios();
+				menuUsuarios.setVisible(true);
+				dispose();
+			});
+			toolBar.add(btnUsuarios);
 		}
 
 		JButton btnCerrarSesion = new JButton("Cerrar Sesión");
@@ -225,6 +301,17 @@ public class MenuCursos extends JFrame {
 			cursosEnTabla.add(curso);
 		}
 
+	};
+
+	private void getCursosAdministrador(LinkedList<Curso> cursos, DefaultTableModel model) {
+		model.setRowCount(0);
+		cursosEnTabla = new LinkedList<>();
+		for (Curso curso : cursos) {
+			String precio = String.format("$%.2f", curso.getPrecio());
+			model.addRow(new Object[] { curso.getTitulo(), curso.getDescripcion(), curso.getProfesor(), precio,
+					curso.isActivo() ? "Activo" : "Inactivo" });
+			cursosEnTabla.add(curso);
+		}
 	};
 
 	private void getInscripciones(LinkedList<Inscripcion> inscripciones, DefaultTableModel model) {

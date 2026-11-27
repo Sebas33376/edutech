@@ -88,7 +88,13 @@ public class DetalleCurso extends JFrame {
 
 			}
 		} else if (usuario instanceof Administrador) {
-
+			clases = ControllerClase.getClasesByCurso(curso.getId());
+			model = new DefaultTableModel(new Object[] { "Título", "Clase", "Descripción", "Curso", "Tarea" }, 0);
+			model.setRowCount(0);
+			for (Clase clase : clases) {
+				model.addRow(new Object[] { clase.getTitulo(), clase.getUrl(), clase.getDescripcion(), clase.getCurso(),
+						clase.isHasTarea() ? "Tiene" : "No tiene" });
+			}
 		}
 
 		table = new JTable(model);
@@ -149,6 +155,7 @@ public class DetalleCurso extends JFrame {
 			btnClase.setVisible(estaInscripto);
 		} else {
 			btnComprar.setVisible(false);
+			btnClase.setVisible(!(usuario instanceof Administrador));
 		}
 		panelActions.add(btnClase);
 		panelActions.add(btnComprar);

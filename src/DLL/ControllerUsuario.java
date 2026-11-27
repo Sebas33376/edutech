@@ -34,8 +34,9 @@ public class ControllerUsuario {
 							+ "     ELSE 'DESCONOCIDO' END AS rol " + "FROM usuarios u "
 							+ "LEFT JOIN profesores p ON u.id = p.id " + "LEFT JOIN alumnos a ON u.id = a.id "
 							+ "LEFT JOIN administradores adm ON u.id = adm.id "
-							+ "WHERE u.email = ? AND u.activo = TRUE");
-			stmt.setString(1, email);
+							+ "WHERE (u.email = ? OR u.userName = ?) AND u.activo = TRUE");
+			stmt.setString(1, email.trim());
+			stmt.setString(2, email.trim());
 
 			ResultSet rs = stmt.executeQuery();
 
@@ -78,7 +79,8 @@ public class ControllerUsuario {
 		return usuario;
 	}
 
-	public void agregarUsuario(Usuario usuario) {
+	public boolean agregarUsuario(Usuario usuario) {
+		boolean creado = false;
 		try {
 			PreparedStatement statement = conexion.prepareStatement(
 					"INSERT INTO usuarios (userName, nombre, apellido, contrasena, activo, email) VALUES (?,?,?,?,?,?)",
@@ -106,6 +108,7 @@ public class ControllerUsuario {
 					statementAlu.setInt(1, idGenerado);
 					statementAlu.setDate(2, Date.valueOf(alumno.getFechaIngreso()));
 					statementAlu.executeUpdate();
+					creado = true;
 
 				} else if (usuario instanceof Profesor) {
 					Profesor profesor = (Profesor) usuario;
@@ -116,6 +119,7 @@ public class ControllerUsuario {
 					statementProf.setString(3, profesor.getProfesion());
 					statementProf.setInt(4, profesor.getCategoriaId());
 					statementProf.executeUpdate();
+					creado = true;
 
 				} else if (usuario instanceof Administrador) {
 					Administrador admin = (Administrador) usuario;
@@ -124,6 +128,7 @@ public class ControllerUsuario {
 					statementAdmin.setInt(1, idGenerado);
 					statementAdmin.setInt(2, admin.getCategoriaId());
 					statementAdmin.executeUpdate();
+					creado = true;
 
 				} else {
 					System.out.println("Tipo de usuario desconocido");
@@ -134,6 +139,33 @@ public class ControllerUsuario {
 			JOptionPane.showMessageDialog(null, "No se puede crear usuario con mail o userName existente");
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		return creado;
+	}
+
+	public String siguienteLegajo() {
+		int ultimo = 100;
+		try {
+			PreparedStatement stmt = conexion.prepareStatement(
+					"SELECT MAX(CAST(SUBSTRING(legajo, 5) AS UNSIGNED)) AS ultimo FROM profesores");
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next() && rs.getInt("ultimo") > 0) {
+				ultimo = rs.getInt("ultimo");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "LEG-" + (ultimo + 1);
+	}
+
+	public boolean bajaUsuario(int id) {
+		try {
+			PreparedStatement stmt = conexion.prepareStatement("UPDATE usuarios SET activo = FALSE WHERE id = ?");
+			stmt.setInt(1, id);
+			return stmt.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 

@@ -24,6 +24,32 @@ public class Administrador extends Usuario {
 		this.categoriaId = id;
 	}
 
+	public boolean puedeAdministrar(Usuario objetivo) {
+		if (objetivo instanceof Alumno) {
+			return true;
+		}
+		if (objetivo instanceof Profesor) {
+			return ((Profesor) objetivo).getCategoriaId() == categoriaId;
+		}
+		return false;
+	}
+
+	public String siguienteLegajo() {
+		return getController().siguienteLegajo();
+	}
+
+
+	public Profesor crearProfesor(String userName, String nombre, String apellido, String email, String contrasena,
+			String profesion) {
+		Profesor profesor = new Profesor(0, userName, nombre, apellido, contrasena, true, email, siguienteLegajo(),
+				profesion, categoriaId);
+		return Usuario.registrar(profesor) ? profesor : null;
+	}
+
+	public boolean darDeBaja(Usuario objetivo) {
+		return puedeAdministrar(objetivo) && getController().bajaUsuario(objetivo.getId());
+	}
+
 	@Override
 	public String toString() {
 		return "Administrador [" + super.toString() + " categoria=" + categoriaId + "]";
@@ -32,3 +58,4 @@ public class Administrador extends Usuario {
 	
 	
 }
+

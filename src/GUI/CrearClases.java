@@ -29,6 +29,7 @@ import BLL.Tarea;
 import BLL.TipoDeEntrega;
 import BLL.Usuario;
 
+
 public class CrearClases extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -65,6 +66,7 @@ public class CrearClases extends JFrame {
 		contentPane.setLayout(null);
 		setTitle("Clases de " + tituloCurso);
 
+		
 		JLabel lblClases = new JLabel("Clases del curso");
 		lblClases.setBounds(10, 10, 200, 14);
 		contentPane.add(lblClases);
@@ -109,6 +111,7 @@ public class CrearClases extends JFrame {
 		btnQuitarClase.setBounds(128, 460, 112, 30);
 		contentPane.add(btnQuitarClase);
 
+	
 		JLabel lblTitulo = new JLabel("Título");
 		lblTitulo.setBounds(270, 10, 100, 14);
 		contentPane.add(lblTitulo);
@@ -140,6 +143,7 @@ public class CrearClases extends JFrame {
 		contentPane.add(tfUrl);
 		tfUrl.setColumns(10);
 
+		
 		chkTarea = new JCheckBox("Esta clase tiene una tarea");
 		chkTarea.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -198,6 +202,7 @@ public class CrearClases extends JFrame {
 		taTareaDescripcion.setWrapStyleWord(true);
 		scrollTarea.setViewportView(taTareaDescripcion);
 
+		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -222,6 +227,7 @@ public class CrearClases extends JFrame {
 		btnCrear.setBounds(762, 505, 108, 36);
 		contentPane.add(btnCrear);
 
+		
 		for (int i = 0; i < cantidad; i++) {
 			clases.add(new Clase(0, "", "", "", 0));
 			tareas.add(null);
@@ -230,6 +236,7 @@ public class CrearClases extends JFrame {
 		listaClases.setSelectedIndex(0);
 		cargarFormulario(0);
 	}
+
 
 	private void agregarClase() {
 		if (clases.size() >= 100) {
@@ -280,6 +287,7 @@ public class CrearClases extends JFrame {
 		}
 		return (i + 1) + ". " + titulo + (tareas.get(i) != null ? "  [tarea]" : "");
 	}
+
 
 	private void guardarFormulario() {
 		clases.set(indiceActual, new Clase(0, tfTitulo.getText().trim(), tfUrl.getText().trim(),
@@ -365,7 +373,7 @@ public class CrearClases extends JFrame {
 
 		if (Curso.crear(curso, clases, tareas)) {
 			JOptionPane.showMessageDialog(null,
-					"Curso creado correctamente.");
+					"Curso creado correctamente. Queda pendiente hasta que el administrador defina el precio y lo active.");
 			MenuCursos menu = new MenuCursos();
 			menu.setVisible(true);
 			dispose();

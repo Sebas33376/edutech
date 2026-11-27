@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
+import java.util.List;
 import java.sql.PreparedStatement;
 
 import BLL.Clase;
@@ -14,7 +15,7 @@ import BLL.Tarea;
 public class ControllerCurso {
 	private static Connection conexion = Conexion.getInstance().getConnection();
 
-	public static boolean crearCurso(Curso curso, LinkedList<Clase> clases, LinkedList<Tarea> tareas) {
+	public static boolean crearCurso(Curso curso, List<Clase> clases, List<Tarea> tareas) {
 		boolean autoCommitOriginal = true;
 		try {
 			autoCommitOriginal = conexion.getAutoCommit();
@@ -28,7 +29,7 @@ public class ControllerCurso {
 			stmtCurso.setDouble(3, curso.getPrecio());
 			stmtCurso.setInt(4, curso.getCategoriaId());
 			stmtCurso.setInt(5, curso.getProfesorId());
-			stmtCurso.setBoolean(6, false); // queda inactivo hasta que el administrador lo active
+			stmtCurso.setBoolean(6, false);
 			stmtCurso.executeUpdate();
 
 			ResultSet keysCurso = stmtCurso.getGeneratedKeys();
@@ -56,7 +57,6 @@ public class ControllerCurso {
 
 				Tarea plantilla = tareas.get(i);
 				if (plantilla != null) {
-					// Mismo Connection => ControllerTarea participa de esta transacción
 					Tarea tarea = new Tarea(plantilla.getTitulo(), plantilla.getDescripcion(), plantilla.getTipo(),
 							plantilla.getUrl(), claseId);
 					if (!ControllerTarea.setTarea(tarea)) {
@@ -83,7 +83,7 @@ public class ControllerCurso {
 			}
 		}
 	}
-	
+
 	public static Curso getCursoById(int id) {
 		Curso curso = null;
 		try {
@@ -161,5 +161,54 @@ public class ControllerCurso {
 			e.printStackTrace();
 		}
 		return cursos;
+	}
+
+	public static LinkedList<Curso> mostrarCursosByCategoria(int categoriaId) {
+		LinkedList<Curso> cursos = new LinkedList<>();
+		try {
+			PreparedStatement stmt = conexion.prepareStatement(
+					"SELECT c.id, c.titulo, c.descripcion, c.precio, ca.nombre , concat(u.nombre, ' ' , u.apellido) as 'profesor', c.profesor_fk, c.categoria_fk, c.activo, ca.nombre as 'categoria' FROM cursos c inner join categorias ca on c.categoria_fk = ca.id inner join usuarios u on u.id = c.profesor_fk WHERE c.categoria_fk = ?");
+			stmt.setInt(1, categoriaId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String titulo = rs.getString("titulo");
+				String descripcion = rs.getString("descripcion");
+				double precio = rs.getDouble("precio");
+				String categoria = rs.getString("categoria");
+				String profesor = rs.getString("profesor");
+				boolean activo = rs.getBoolean("activo");
+				int profesorId = rs.getInt("profesor_fk");
+
+				cursos.add(new Curso(id, titulo, descripcion, precio, activo, categoriaId, profesorId, categoria,
+						profesor));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cursos;
+	}
+
+	public static boolean activarCurso(int cursoId, double precio) {
+		try {
+			PreparedStatement stmt = conexion.prepareStatement("UPDATE cursos SET activo = TRUE, precio = ? WHERE id = ?");
+			stmt.setDouble(1, precio);
+			stmt.setInt(2, cursoId);
+			return stmt.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public static boolean desactivarCurso(int cursoId) {
+		try {
+			PreparedStatement stmt = conexion.prepareStatement("UPDATE cursos SET activo = FALSE WHERE id = ?");
+			stmt.setInt(1, cursoId);
+			return stmt.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
