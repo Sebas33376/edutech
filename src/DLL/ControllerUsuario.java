@@ -34,9 +34,8 @@ public class ControllerUsuario {
 							+ "     ELSE 'DESCONOCIDO' END AS rol " + "FROM usuarios u "
 							+ "LEFT JOIN profesores p ON u.id = p.id " + "LEFT JOIN alumnos a ON u.id = a.id "
 							+ "LEFT JOIN administradores adm ON u.id = adm.id "
-							+ "WHERE (u.email = ? OR u.userName = ?) AND u.activo = TRUE");
-			stmt.setString(1, email.trim());
-			stmt.setString(2, email.trim());
+							+ "WHERE u.email = ? AND u.activo = TRUE");
+			stmt.setString(1, email);
 
 			ResultSet rs = stmt.executeQuery();
 
@@ -143,6 +142,7 @@ public class ControllerUsuario {
 		return creado;
 	}
 
+	
 	public String siguienteLegajo() {
 		int ultimo = 100;
 		try {
@@ -158,6 +158,17 @@ public class ControllerUsuario {
 		return "LEG-" + (ultimo + 1);
 	}
 
+	public boolean altaUsuario(int id) {
+		try {
+			PreparedStatement stmt = conexion.prepareStatement("UPDATE usuarios SET activo = TRUE WHERE id = ?");
+			stmt.setInt(1, id);
+			return stmt.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public boolean bajaUsuario(int id) {
 		try {
 			PreparedStatement stmt = conexion.prepareStatement("UPDATE usuarios SET activo = FALSE WHERE id = ?");
@@ -170,6 +181,11 @@ public class ControllerUsuario {
 	}
 
 	public LinkedList<Usuario> mostrarUsuarios() {
+		return mostrarUsuarios(true);
+	}
+
+
+	public LinkedList<Usuario> mostrarUsuarios(boolean soloActivos) {
 		LinkedList<Usuario> usuarios = new LinkedList<>();
 		try {
 			PreparedStatement stmt = conexion.prepareStatement("SELECT \r\n" + "   u.id,\r\n" + "    u.userName,\r\n"
@@ -180,7 +196,7 @@ public class ControllerUsuario {
 					+ "        WHEN a.id IS NOT NULL THEN 'ALUMNO'\r\n" + "        ELSE 'ADMIN'\r\n"
 					+ "    END AS rol\r\n" + "FROM usuarios u\r\n" + "LEFT JOIN profesores p ON u.id = p.id\r\n"
 					+ "LEFT JOIN alumnos a ON u.id = a.id\r\n" + "LEFT JOIN administradores adm ON u.id = adm.id\r\n"
-					+ "WHERE u.activo = TRUE;");
+					+ (soloActivos ? "WHERE u.activo = TRUE;" : ";"));
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
@@ -308,3 +324,4 @@ public class ControllerUsuario {
 
 	}
 }
+

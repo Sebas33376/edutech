@@ -38,12 +38,15 @@ public class Administrador extends Usuario {
 		return getController().siguienteLegajo();
 	}
 
-
 	public Profesor crearProfesor(String userName, String nombre, String apellido, String email, String contrasena,
 			String profesion) {
 		Profesor profesor = new Profesor(0, userName, nombre, apellido, contrasena, true, email, siguienteLegajo(),
 				profesion, categoriaId);
 		return Usuario.registrar(profesor) ? profesor : null;
+	}
+
+	public boolean darDeAlta(Usuario objetivo) {
+		return puedeAdministrar(objetivo) && getController().altaUsuario(objetivo.getId());
 	}
 
 	public boolean darDeBaja(Usuario objetivo) {
@@ -58,4 +61,3 @@ public class Administrador extends Usuario {
 	
 	
 }
-

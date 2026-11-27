@@ -27,6 +27,7 @@ public class MenuUsuarios extends JFrame {
 	private JButton btnProfesores;
 	private JButton btnAlumnos;
 	private JButton btnBaja;
+	private JButton btnAlta;
 	private Administrador admin;
 	private LinkedList<Usuario> usuarios;
 	private LinkedList<Usuario> usuariosEnTabla;
@@ -49,7 +50,7 @@ public class MenuUsuarios extends JFrame {
 			return;
 		}
 		admin = (Administrador) Usuario.logueado;
-		usuarios = Usuario.getController().mostrarUsuarios();
+		usuarios = Usuario.getController().mostrarUsuarios(false);
 
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
@@ -93,7 +94,7 @@ public class MenuUsuarios extends JFrame {
 		btnCrearProfesor.setBounds(957, 10, 137, 32);
 		contentPane.add(btnCrearProfesor);
 
-		model = new DefaultTableModel(new Object[] { "Usuario", "Nombre", "Apellido", "Email", "Detalle" }, 0);
+		model = new DefaultTableModel(new Object[] { "Usuario", "Nombre", "Apellido", "Email", "Detalle", "Estado" }, 0);
 		table = new JTable(model);
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(10, 52, 1084, 340);
@@ -111,7 +112,7 @@ public class MenuUsuarios extends JFrame {
 				}
 				if (admin.darDeBaja(usuarioSeleccionado)) {
 					JOptionPane.showMessageDialog(null, "Usuario dado de baja");
-					usuarios = Usuario.getController().mostrarUsuarios();
+					usuarios = Usuario.getController().mostrarUsuarios(false);
 					getUsuarios();
 				} else {
 					JOptionPane.showMessageDialog(null, "No se pudo dar de baja al usuario");
@@ -120,21 +121,38 @@ public class MenuUsuarios extends JFrame {
 		});
 		contentPane.add(btnBaja);
 
+		btnAlta = new JButton("Dar de alta");
+		btnAlta.setBounds(175, 402, 155, 42);
+		btnAlta.setEnabled(false);
+		btnAlta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (admin.darDeAlta(usuarioSeleccionado)) {
+					JOptionPane.showMessageDialog(null, "Usuario dado de alta");
+					usuarios = Usuario.getController().mostrarUsuarios(false);
+					getUsuarios();
+				} else {
+					JOptionPane.showMessageDialog(null, "No se pudo dar de alta al usuario");
+				}
+			}
+		});
+		contentPane.add(btnAlta);
+
 		table.getSelectionModel().addListSelectionListener(e -> {
 			if (!e.getValueIsAdjusting()) {
 				int row = table.getSelectedRow();
 				if (row != -1) {
 					usuarioSeleccionado = usuariosEnTabla.get(row);
-					btnBaja.setEnabled(true);
+					btnBaja.setEnabled(usuarioSeleccionado.isActivo());
+					btnAlta.setEnabled(!usuarioSeleccionado.isActivo());
 				} else {
 					btnBaja.setEnabled(false);
+					btnAlta.setEnabled(false);
 				}
 			}
 		});
 
 		getUsuarios();
 	}
-
 
 	private void getUsuarios() {
 		btnProfesores.setEnabled(!verProfesores);
@@ -147,13 +165,15 @@ public class MenuUsuarios extends JFrame {
 				Profesor profesor = (Profesor) usuario;
 				if (profesor.getCategoriaId() == admin.getCategoriaId()) {
 					model.addRow(new Object[] { profesor.getUserName(), profesor.getNombre(), profesor.getApellido(),
-							profesor.getEmail(), profesor.getLegajo() + " - " + profesor.getProfesion() });
+							profesor.getEmail(), profesor.getLegajo() + " - " + profesor.getProfesion(),
+							profesor.isActivo() ? "Activo" : "Inactivo" });
 					usuariosEnTabla.add(profesor);
 				}
 			} else if (!verProfesores && usuario instanceof Alumno) {
 				Alumno alumno = (Alumno) usuario;
 				model.addRow(new Object[] { alumno.getUserName(), alumno.getNombre(), alumno.getApellido(),
-						alumno.getEmail(), "Ingreso: " + alumno.getFechaIngreso() });
+						alumno.getEmail(), "Ingreso: " + alumno.getFechaIngreso(),
+						alumno.isActivo() ? "Activo" : "Inactivo" });
 				usuariosEnTabla.add(alumno);
 			}
 		}
